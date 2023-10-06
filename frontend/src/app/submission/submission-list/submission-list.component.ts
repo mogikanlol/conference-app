@@ -19,7 +19,7 @@ import { map, filter, pairwise } from 'rxjs/operators';
 export class SubmissionsComponent implements OnInit {
 
   form!: FormGroup;
-  submissionType = ['Все доклады', 'Мои доклады', 'Доклады, которые мне нужно оценить'];
+  submissionType = ['All submissions', 'My submissions', 'Submissions that I must review'];
   page!: Page<BriefSubmission>;
   conferenceId!: number;
   userRoles!: BriefUserRoles;
@@ -62,13 +62,13 @@ export class SubmissionsComponent implements OnInit {
     console.log(value);
     this.status = this.submissionStatusService.getStatusNumber(value.status);
     switch (value.type) {
-      case 'Мои доклады':
+      case 'My submissions':
         this.conferenceService.getUserSubmissions(this.conferenceId, this.status).subscribe(data => this.page = data);
         break;
-      case 'Все доклады':
+      case 'All submissions':
         this.conferenceService.getSubmissions(this.conferenceId, this.status).subscribe(data => this.page = data);
         break;
-      case 'Доклады, которые мне нужно оценить':
+      case 'Submissions that I must review':
         this.conferenceService.getReviewerSubmissions(this.conferenceId, this.status).subscribe(data => this.page = data);
         break;
     }
@@ -96,7 +96,7 @@ export class SubmissionsComponent implements OnInit {
         return this.submissionType;
       }
     }
-    return ['Все доклады', 'Мои доклады'];
+    return ['All submissions', 'My submissions'];
   }
 
 }

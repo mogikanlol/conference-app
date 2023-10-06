@@ -36,6 +36,6 @@ a:not([href]) {
 }
 
 .custom-file-label:after {
-  content: 'Выберите файл';
+  content: 'Choose document';
 }
 

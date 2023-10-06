@@ -3,8 +3,8 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class ConferenceRoleService {
 
-  private roles = ['Докладчик', 'Рецензент', 'Организатор', 'Админ'];
-  private changeableRoles = ['Докладчик', 'Рецензент', 'Админ'];
+  private roles = ['Submitter', 'Reviewer', 'Organizer', 'Conference admin'];
+  private changeableRoles = ['Submitter', 'Reviewer', 'Conference admin'];
 
   public getSubmitterNumber(): number {
     return 0;
@@ -25,13 +25,13 @@ export class ConferenceRoleService {
   public getRole(roleNumber: number): string {
     switch (roleNumber) {
       case 0:
-        return 'Докладчик';
+        return 'Submitter';
       case 1:
-        return 'Рецензент';
+        return 'Reviewer';
       case 2:
-        return 'Организатор';
+        return 'Organizer';
       case 3:
-        return 'Админ';
+        return 'Conference admin';
       default:
         return "";
     }
@@ -39,13 +39,13 @@ export class ConferenceRoleService {
 
   public getRoleNumber(role: string): number {
     switch (role) {
-      case 'Докладчик':
+      case 'Submitter':
         return 0;
-      case 'Рецензент':
+      case 'Reviewer':
         return 1;
-      case 'Организатор':
+      case 'Organizer':
         return 2;
-      case 'Админ':
+      case 'Conference admin':
         return 3;
       default :
         return -1;

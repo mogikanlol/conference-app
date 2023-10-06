@@ -1,4 +1,4 @@
-<h3 class="text-center">Список конференций</h3>
+<h3 class="text-center">Conference list</h3>
 <div class="container">
   <div class="btn-group float-right">
     <button
@@ -15,7 +15,7 @@
                 <div class="row">
                   <div class="col-12">
 
-                    <h5 class="card-title">Статус конференций</h5>
+                    <h5 class="card-title">Conference Status</h5>
                     <div class="form-group">
                       <div class="form-check" *ngFor="let status of this.conferenceStatusService.getDicplayableStatuses()">
                         <input class="form-check-input" name="status" [value]="status" type="radio" id="{{status}}"
@@ -29,7 +29,7 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="form-group">
-                      <button type="submit" class="btn btn-sm btn-success">Применить</button>
+                      <button type="submit" class="btn btn-sm btn-success">Apply</button>
                     </div>
                   </div>
                 </div>

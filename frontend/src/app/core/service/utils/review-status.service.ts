@@ -3,20 +3,20 @@ import {Injectable} from '@angular/core';
 @Injectable()
 export class ReviewStatusService {
 
-  private displayableStatuses = ['Принять', 'Принять с изменениями', 'Не могу решить', 'Отклонить с изменениями', 'Отклонить'];
+  private displayableStatuses = ['Accept', 'Accept, edit required', 'Can not decide', 'Decline, edit required', 'Decline'];
 
   public getStatus(statusNumber: number): string {
     switch (statusNumber) {
       case 0:
-        return 'Отклонить';
+        return 'Decline';
       case 1:
-        return 'Отклонить с изменениями';
+        return 'Decline, edit required';
       case 2:
-        return 'Не могу решить';
+        return 'Can not decide';
       case 3:
-        return 'Принять с изменениями';
+        return 'Accept, edit required';
       case 4:
-        return 'Принять';
+        return 'Accept';
       default:
         return "";
     }
@@ -24,15 +24,15 @@ export class ReviewStatusService {
 
   public getStatusNumber(status: string): number {
     switch (status) {
-      case 'Отклонить':
+      case 'Decline':
         return 0;
-      case 'Отклонить с изменениями':
+      case 'Decline, edit required':
         return 1;
-      case 'Не могу решить':
+      case 'Can not decide':
         return 2;
-      case 'Принять с изменениями':
+      case 'Accept, edit required':
         return 3;
-      case 'Принять':
+      case 'Accept':
         return 4;
       default:
         return -1;

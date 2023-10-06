@@ -22,7 +22,7 @@ export class ConferenceUserListComponent implements OnInit {
   selectedRole!: number;
 
   conferenceId!: number;
-  userRole = ['Все', 'Организатор', 'Докладчик', 'Рецензент', 'Админ'];
+  userRole = ['All', 'Organizer', 'Submitter', 'Reviewer', 'Conference admin'];
 
   userRoles!: BriefUserRoles;
   searchedUsers!: Page<BriefUser>;
@@ -62,8 +62,9 @@ export class ConferenceUserListComponent implements OnInit {
   }
 
   updateUsersData() {
+    let role = this.selectedRole == -1 ? undefined : this.selectedRole;
     this.conferenceService
-      .getUsers(this.conferenceId, this.page ? this.page.number : 0, this.selectedRole)
+      .getUsers(this.conferenceId, this.page ? this.page.number : 0, role)
       .subscribe((data => this.page = data));
   }
 

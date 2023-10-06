@@ -20,7 +20,7 @@ export class RequestListComponent implements OnInit {
   page!: Page<BriefConferenceRequest>;
 
   form!: FormGroup;
-  requestType = ['Все', 'Принятые', 'Отклоненные', 'Ожидающие'];
+  requestType = ['All', 'Accepted', 'Declined', 'Awaiting'];
 
   selectedType!: number;
 
@@ -59,16 +59,16 @@ export class RequestListComponent implements OnInit {
 
   submit(value: any) {
     switch (value.type) {
-      case 'Все':
+      case 'All':
         this.selectedType = -1;
         break;
-      case 'Принятые':
+      case 'Accepted':
         this.selectedType = this.conferenceRequestStatusService.getAcceptedNumber();
         break;
-      case 'Отклоненные':
+      case 'Declined':
         this.selectedType = this.conferenceRequestStatusService.getDeclinedNumber();
         break;
-      case 'Ожидающие':
+      case 'Awaiting':
         this.selectedType = this.conferenceRequestStatusService.getPendingNumber();
         break;
     }

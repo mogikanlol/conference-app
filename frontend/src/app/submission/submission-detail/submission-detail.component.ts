@@ -24,9 +24,9 @@ import {ConferenceRoleService} from '../../core/service/utils/conference-role.se
 export class SubmissionDetailComponent implements OnInit {
 
   statuses: Map<number, string> = new Map([
-    [0, 'В ожидании'],
-    [1, 'Отклонен'],
-    [2, 'Принят']
+    [0, 'Waiting'],
+    [1, 'Declined'],
+    [2, 'Accepted']
   ]);
 
   userRoles!: BriefUserRoles;

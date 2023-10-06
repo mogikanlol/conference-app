@@ -2,14 +2,14 @@
   <table *ngIf="page" class="table table-hover">
     <thead>
     <tr>
-      <th>Имя</th>
-      <th *ngIf="isAdmin()">Действие</th>
+      <th>Name</th>
+      <th *ngIf="isAdmin()">Action</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let u of page.content">
       <td>{{ u.firstname }} {{u.lastname}}</td>
-      <td *ngIf="isAdmin()"><button class="btn btn-danger" (click)="deleteReviewer(u)">Убрать</button></td>
+      <td *ngIf="isAdmin()"><button class="btn btn-danger" (click)="deleteReviewer(u)">Remove</button></td>
     </tr>
     </tbody>
   </table>

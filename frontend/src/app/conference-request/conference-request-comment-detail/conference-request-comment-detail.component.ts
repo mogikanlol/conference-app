@@ -12,8 +12,8 @@ export class ConferenceRequestCommentDetailComponent implements OnInit {
   comment!: ConferenceRequestComment;
 
   statuses: Map<number, string> = new Map([
-    [1, 'Отклонить'],
-    [2, 'Принять']
+    [1, 'Declined'],
+    [2, 'Accepted']
   ]);
 
 

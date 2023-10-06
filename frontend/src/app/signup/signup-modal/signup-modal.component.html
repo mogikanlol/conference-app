@@ -1,17 +1,17 @@
 <div class="card card-outline-secondary" id="signup-modal">
   <div class="card-header">
-    <h3 class="mb-0 d-inline">Регистрация</h3>
+    <h3 class="mb-0 d-inline">Registration</h3>
     <button type="button" class="close float-right d-inline" (click)="close()">&times;</button>
   </div>
   <div class="card-body">
     <form class="form" role="form" autocomplete="off" [formGroup]="form" (ngSubmit)="submit(form.value)" novalidate>
       <div class="form-group">
-        <label for="inputFirstName">Имя</label>
-        <input type="text" class="form-control" id="inputFirstName" placeholder="Имя" formControlName="firstname">
+        <label for="inputFirstName">First name</label>
+        <input type="text" class="form-control" id="inputFirstName" placeholder="First name" formControlName="firstname">
       </div>
       <div class="form-group">
-        <label for="inputLastName">Фамилия</label>
-        <input type="text" class="form-control" id="inputLastName" placeholder="Фамилия" formControlName="lastname">
+        <label for="inputLastName">Last name</label>
+        <input type="text" class="form-control" id="inputLastName" placeholder="Last name" formControlName="lastname">
       </div>
       <div class="form-group">
         <label for="inputEmail3">Email</label>
@@ -19,19 +19,19 @@
         <div class="alert alert-danger" *ngIf="this.error?.email">{{this.error.email}}</div>
       </div>
       <div class="form-group">
-        <label for="inputPassword3">Пароль</label>
-        <input type="password" class="form-control" id="inputPassword3" placeholder="Пароль" formControlName="password">
+        <label for="inputPassword3">Password</label>
+        <input type="password" class="form-control" id="inputPassword3" placeholder="Password" formControlName="password">
         <div class="alert alert-danger" *ngIf="this.error?.password">
           <p *ngFor="let e of this.error.password">{{e}}</p>
         </div>
       </div>
       <div class="form-group">
-        <label for="inputVerify3">Подтвердите</label>
-        <input type="password" class="form-control" id="inputVerify3" placeholder="Пароль (еще раз)"
+        <label for="inputVerify3">Confirm password</label>
+        <input type="password" class="form-control" id="inputVerify3" placeholder="Confirm password"
                formControlName="passwordRetype">
       </div>
       <div class="form-group">
-        <button type="submit" class="btn btn-success btn-lg float-right" [disabled]="!form.valid">Зарегистрироваться
+        <button type="submit" class="btn btn-success btn-lg float-right" [disabled]="!form.valid">Sign up
         </button>
       </div>
     </form>

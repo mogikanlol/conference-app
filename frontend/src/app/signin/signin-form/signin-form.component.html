@@ -30,7 +30,7 @@
 <!--</div>-->
 <div class="card card-outline-secondary">
   <div class="card-header">
-    <h3 class="mb-0">Авторизация</h3>
+    <h3 class="mb-0">Authentication</h3>
   </div>
   <div class="card-body">
     <form class="form" role="form" autocomplete="off" id="loginForm" [formGroup]="form" novalidate (ngSubmit)="submit(form.value)">
@@ -49,7 +49,7 @@
           <!--<input type="checkbox" class="form-check-input"> <span>Remember me on this computer</span>-->
         <!--</label>-->
       <!--</div>-->
-      <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin" [disabled]="!form.valid">Войти</button>
+      <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin" [disabled]="!form.valid">Sign in</button>
     </form>
   </div>
   <!--/card-body-->

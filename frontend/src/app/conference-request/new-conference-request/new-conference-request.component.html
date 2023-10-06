@@ -2,35 +2,35 @@
 <div class="container">
   <div class="card card-outline-secondary">
     <div class="card-header">
-      <h3 class="mb-0">Cоздание конференции</h3>
+      <h3 class="mb-0">Conference creation</h3>
     </div>
     <div class="card-body">
       <form class="form" [formGroup]="form" (ngSubmit)="submit(form.value)" id="loginForm" novalidate>
         <div class="form-group">
-          <label for="title">Название конференции</label>
+          <label for="title">Title</label>
           <input type="text" class="form-control" id="title" formControlName="title">
         </div>
         <div class="form-group">
-          <label for="acronym">Акроним конференции</label>
+          <label for="acronym">Acronym</label>
           <input type="text" class="form-control" id="acronym" formControlName="acronym">
         </div>
         <div class="form-group">
-          <label for="webPage">Веб сайт конференции</label>
+          <label for="webPage">Webpage</label>
           <input type="text" class="form-control" id="webPage" formControlName="webPage">
         </div>
         <div class="form-group">
-          <label for="country">Страна конференции</label>
+          <label for="country">Country</label>
           <input type="text" class="form-control" id="country" formControlName="country">
         </div>
         <div class="form-group">
-          <label for="city">Город конференции</label>
+          <label for="city">City</label>
           <input type="text" class="form-control" id="city" formControlName="city">
         </div>
         <div class="form-group w-50">
-          <label for="date">Дата окончания конференции</label>
+          <label for="date">Conference end date</label>
           <input type="date" class="form-control" id="date" formControlName="expirationDate" [min]="today">
         </div>
-        <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin" [disabled]="!form.valid">Отправить запрос</button>
+        <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin" [disabled]="!form.valid">Send the request</button>
       </form>
     </div>
   </div>

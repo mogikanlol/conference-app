@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class ConferenceStatusService {
-  private displayableStatuses = ['Все', 'Активные', 'Завершенные'];
+  private displayableStatuses = ['All', 'Active', 'Completed'];
 
   public getDicplayableStatuses(): string[] {
     return this.displayableStatuses;

@@ -1,39 +1,39 @@
 <div class="container">
   <div class="card card-outline-secondary mb-3">
     <div class="card-header">
-      <h3 class="mb-0">Информация запроса</h3>
+      <h3 class="mb-0">Request information</h3>
     </div>
     <div class="card-body">
       <form class="form" [formGroup]="form" id="loginForm" novalidate>
         <div class="form-group">
-          <label for="title">Название конференции</label>
+          <label for="title">Conference title</label>
           <input type="text" class="form-control" id="title" formControlName="title">
         </div>
         <div class="form-group">
-          <label for="acronym">Акроним конференции</label>
+          <label for="acronym">Conference acronym</label>
           <input type="text" class="form-control" id="acronym" formControlName="acronym">
         </div>
         <div class="form-group">
-          <label for="webPage">Веб сайт конференции</label>
+          <label for="webPage">Webpage</label>
           <input type="text" class="form-control" id="webPage" formControlName="webPage">
         </div>
         <div class="form-group">
-          <label for="country">Страна конференции</label>
+          <label for="country">Country</label>
           <input type="text" class="form-control" id="country" formControlName="country">
         </div>
         <div class="form-group">
-          <label for="city">Город конференции</label>
+          <label for="city">City</label>
           <input type="text" class="form-control" id="city" formControlName="city">
         </div>
         <div class="form-group w-50">
-          <label for="date">Дата окончания конференции</label>
+          <label for="date">Conference end date</label>
           <input type="date" class="form-control" id="date" formControlName="expirationDate" [min]="today">
         </div>
         <div class="text-center"
              *ngIf="!isAdmin() && this.conferenceRequest.status === conferenceRequestStatusService.getDeclinedNumber()">
-          <button type="button" class="btn btn-primary" (click)="this.form.enable()">Редактировать</button>
+          <button type="button" class="btn btn-primary" (click)="this.form.enable()">Edit</button>
           <button type="button" class="btn btn-primary" [disabled]="!form.valid"
-                  (click)="resendRequest(this.form.value)">Отправить повторно
+                  (click)="resendRequest(this.form.value)">Resend
           </button>
         </div>
       </form>
@@ -41,7 +41,7 @@
   </div>
 
   <div *ngIf="this.conferenceRequest.comments!.length > 0">
-    <h5 class="text-center">Комментарии</h5>
+    <h5 class="text-center">Comments</h5>
     <div *ngFor="let comment of this.conferenceRequest.comments">
       <app-conference-request-comment-detail [comment]="comment">
       </app-conference-request-comment-detail>

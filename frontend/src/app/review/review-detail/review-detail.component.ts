@@ -17,7 +17,7 @@ import {TokenService} from '../../core/service/token.service';
 export class ReviewDetailComponent implements OnInit {
 
   form!: FormGroup;
-  statuses = ['Принять', 'Принять с изменениями', 'Не могу решить', 'Отклонить с изменениями', 'Отклонить'];
+  statuses = ['Accept', 'Accept, edit required', 'Can not decide', 'Declined, edit required', 'Decline'];
 
   constructor(private route: ActivatedRoute,
               private fb: FormBuilder,

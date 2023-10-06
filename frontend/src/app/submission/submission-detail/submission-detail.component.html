@@ -3,27 +3,26 @@
     <table class="table">
       <thead>
       <tr>
-        <th colspan="2">Информация доклада</th>
+        <th colspan="2">Submission info</th>
       </tr>
       </thead>
       <tbody>
       <tr>
-        <td>Название доклада</td>
+        <td>Submission title</td>
         <td>{{this.submission.title}}</td>
       </tr>
       <tr>
-        <td>Автор</td>
+        <td>Author</td>
         <td>{{this.submission.author.firstname}} {{this.submission.author.lastname}}</td>
       </tr>
       <tr>
-        <td>Статус</td>
+        <td>Status</td>
         <td>{{this.submissionStatusService.getStatus(this.submission.status)}}</td>
       </tr>
       <tr>
-        <td>Рецензенты</td>
+        <td>Reviewers</td>
         <td>
-          <button class="btn btn-light" [routerLink]="['/submissions/', this.submission.id,'reviewers']">Посмотреть
-            список
+          <button class="btn btn-light" [routerLink]="['/submissions/', this.submission.id,'reviewers']">Show list
           </button>
         </td>
       </tr>
@@ -31,7 +30,7 @@
     </table>
 
     <div class="text-center mb-3">
-      <h5 class="text-center">Документы</h5>
+      <h5 class="text-center">Documents</h5>
       <ul class="list-group" *ngFor="let document of this.submission.documents">
         <div class="row w-50 m-auto">
           <div class="col-8">
@@ -49,10 +48,10 @@
       </ul>
     </div>
     <div class="text-center" *ngIf="canSendOnReview()">
-      <button class="btn btn-sm btn-info" (click)="sendOnReview()">Запросить рецензию</button>
+      <button class="btn btn-sm btn-info" (click)="sendOnReview()">Request review</button>
     </div>
   </div>
-  <button type="button" class="btn btn-info" (click)="goBack()">Назад</button>
+  <button type="button" class="btn btn-info" (click)="goBack()">Back</button>
 
   <!---->
   <div class="text-center " *ngIf="canUploadNewFile()">
@@ -61,7 +60,7 @@
       </label>
       <input class="custom-file-input" type="file" (change)="onFileChange($event)" #fileInput>
       <div>
-        <button type="button" (click)="uploadFile()" class="btn btn-primary">Загрузить документ</button>
+        <button type="button" (click)="uploadFile()" class="btn btn-primary">Upload</button>
       </div>
     </div>
   </div>

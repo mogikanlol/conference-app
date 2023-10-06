@@ -2,10 +2,10 @@
   <table *ngIf="page" class="table table-hover">
     <thead>
     <tr>
-      <th>Имя пользователя</th>
+      <th>Username</th>
       <th>Email</th>
-      <th>Роли</th>
-      <th *ngIf="isAdmin()">Действия</th>
+      <th>Roles</th>
+      <th *ngIf="isAdmin()">Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -22,7 +22,7 @@
       </td>
       <td class="text-center" *ngIf="isAdmin()">
         <button type="button" class="btn btn-sm btn-info" (click)="initRoleModal(u)" data-toggle="modal"
-                data-target="#modal">Изменить роли
+                data-target="#modal">Change roles
         </button>
       </td>
     </tr>

@@ -1,5 +1,5 @@
 <div class="container">
-  <h4 class="text-center">Участники</h4>
+  <h4 class="text-center">Participants</h4>
   <div class="btn-group float-right">
     <button
       class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -15,7 +15,7 @@
                 <div class="row">
                   <div class="col-12">
 
-                    <h5 class="card-title">Роли пользователей</h5>
+                    <h5 class="card-title">User roles</h5>
                     <div class="form-group">
                       <div class="form-check" *ngFor="let role of userRole">
                         <input class="form-check-input" name="role" [value]="role" type="radio" id="{{role}}"
@@ -29,7 +29,7 @@
                 <div class="row">
                   <div class="col-12">
                     <div class="form-group">
-                      <button type="submit" class="btn btn-sm btn-success">Применить</button>
+                      <button type="submit" class="btn btn-sm btn-success">Apply</button>
                     </div>
                   </div>
                 </div>
@@ -50,7 +50,7 @@
     <div class="mt-3">
       <form [formGroup]="searchForm">
         <div class="form-group">
-          <input type="search" class="form-control" id="search-input" placeholder="Поиск по email...."
+          <input type="search" class="form-control" id="search-input" placeholder="Search by email...."
                  autocomplete="off"
                  formControlName="search">
         </div>
@@ -59,7 +59,7 @@
     <div *ngIf="searchedUsers">
       <ul class="list-group" *ngFor="let u of searchedUsers.content">
         <li class="list-group-item">{{u.firstname}} {{u.lastname}} ({{u.email}})
-          <button class="btn btn-sm btn-success float-right" (click)="addUser(u)">Добавить</button>
+          <button class="btn btn-sm btn-success float-right" (click)="addUser(u)">Add</button>
         </li>
       </ul>
     </div>

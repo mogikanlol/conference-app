@@ -2,16 +2,16 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class SubmissionStatusService {
-  private displayableStatuses = ['В рассмотрении', 'Отклонен', 'Принят'];
+  private displayableStatuses = ['Being reviewed', 'Declined', 'Accepted'];
 
   public getStatus(statusNumber: number): string {
     switch (statusNumber) {
       case 0:
-        return 'В рассмотрении';
+        return 'Being reviewed';
       case 1:
-        return 'Отклонен';
+        return 'Declined';
       case 2:
-        return 'Принят';
+        return 'Accepted';
       default:
         return "";
     }

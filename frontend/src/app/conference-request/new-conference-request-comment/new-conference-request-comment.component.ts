@@ -13,7 +13,7 @@ export class NewConferenceRequestCommentComponent implements OnInit {
 
   @Output()
   onSubmit = new EventEmitter();
-  statuses = ['Принять', 'Отклонить'];
+  statuses = ['Accept', 'Decline'];
 
   constructor(private fb: FormBuilder) {
   }

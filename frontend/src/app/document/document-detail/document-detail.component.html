@@ -4,30 +4,30 @@
     <table class="table">
       <thead>
       <tr class="text-center">
-        <th colspan="2">Информация документа</th>
+        <th colspan="2">Document information</th>
       </tr>
       </thead>
       <tbody>
       <tr>
-        <td>Название доклада</td>
+        <td>File name</td>
         <td>{{this.document.filename}}</td>
       </tr>
       <tr>
-        <td>Статус</td>
+        <td>Status</td>
         <td>{{submissionStatusService.getStatus(this.document.status)}}</td>
       </tr>
       </tbody>
     </table>
-    <button class="btn btn-info btn-sm" (click)="downloadFile()">Скачать файл</button>
+    <button class="btn btn-info btn-sm" (click)="downloadFile()">Download</button>
 
   </div>
-  <button type="button" class="btn btn-info" (click)="goBack()">Назад</button>
+  <button type="button" class="btn btn-info" (click)="goBack()">Back</button>
 
   <div *ngIf="canMakeNewReview()">
     <app-new-review (onSubmit)="onReviewCreater($event)"></app-new-review>
   </div>
   <div *ngIf="canSeeReviews()">
-    <h5 class="text-center">Рецензии</h5>
+    <h5 class="text-center">Reviews</h5>
     <div *ngFor="let review of document.reviews">
       <app-review-detail  [reviewId]="review.id" (onDelete)="onReviewDeleted($event)"></app-review-detail>
     </div>

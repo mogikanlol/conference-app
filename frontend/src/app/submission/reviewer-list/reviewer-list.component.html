@@ -1,5 +1,5 @@
 <div class="text-center container" *ngIf="submission">
-  <h4 class="text-center">Рецензенты</h4>
+  <h4 class="text-center">Reviewers</h4>
 
   <div class="container">
     <app-reviewer-list-table [page]="page" [conferenceId]="submission.conferenceId"
@@ -8,7 +8,7 @@
       <div class="mt-3">
         <form [formGroup]="form">
           <div class="form-group">
-            <input type="search" class="form-control" id="search-input" placeholder="Поиск по email...." autocomplete="off"
+            <input type="search" class="form-control" id="search-input" placeholder="Search by email...." autocomplete="off"
                    formControlName="search">
           </div>
         </form>
@@ -16,12 +16,12 @@
       <div *ngIf="searchedUsers">
         <ul class="list-group" *ngFor="let u of searchedUsers.content">
           <li class="list-group-item">{{u.firstname}} {{u.lastname}}
-            <button class="btn btn-sm btn-success float-right" (click)="addReviewers(u.id)">Добавить</button>
+            <button class="btn btn-sm btn-success float-right" (click)="addReviewers(u.id)">Add</button>
           </li>
         </ul>
       </div>
     </div>
-    <button type="button" class="btn btn-info" (click)="goBack()">Назад</button>
+    <button type="button" class="btn btn-info" (click)="goBack()">Back</button>
 
     <!--<div>-->
       <!--<h4 class="text-center">Добавить рецензентов</h4>-->
