@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.freefair.lombok'
+}
+//sourceCompatibility = 1.8
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'org.springframework.mobile:spring-mobile-device:1.1.5.RELEASE'
+
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.h2database:h2'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+
+//    implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
+//    implementation "org.glassfish.jaxb:jaxb-runtime:2.3.2"
+
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+
+}
