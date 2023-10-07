@@ -12,6 +12,7 @@ import com.nikolaev.conference_request.status.ConferenceRequestStatusName;
 import com.nikolaev.conference_request.status.ConferenceRequestStatusRepository;
 import com.nikolaev.user.User;
 import com.nikolaev.user.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +21,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ConferenceRequestServiceImpl implements ConferenceRequestService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private ConferenceRequestRepository requestRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ConferenceService conferenceService;
-
-    @Autowired
-    private ConferenceRequestStatusRepository conferenceRequestStatusRepository;
-
-    @Autowired
-    private ConferenceRequestCommentRepository commentRepository;
+    private final ConferenceRequestRepository requestRepository;
+    private final UserRepository userRepository;
+    private final ConferenceService conferenceService;
+    private final ConferenceRequestStatusRepository conferenceRequestStatusRepository;
+    private final ConferenceRequestCommentRepository commentRepository;
 
     @Override
     public void createRequest(ConferenceRequestDto requestDTO) {

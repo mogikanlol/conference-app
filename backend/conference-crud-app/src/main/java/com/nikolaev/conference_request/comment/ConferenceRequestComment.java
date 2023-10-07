@@ -4,8 +4,11 @@ import com.nikolaev.conference_request.ConferenceRequest;
 import com.nikolaev.conference_request.status.ConferenceRequestStatus;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 @Entity
 @Table(name = "conference_request_comment")
 public class ConferenceRequestComment {
@@ -28,43 +31,4 @@ public class ConferenceRequestComment {
     @JoinColumn(name = "status_id")
     private ConferenceRequestStatus status;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public ConferenceRequest getRequest() {
-        return request;
-    }
-
-    public void setRequest(ConferenceRequest request) {
-        this.request = request;
-    }
-
-    public ConferenceRequestStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ConferenceRequestStatus status) {
-        this.status = status;
-    }
 }

@@ -1,7 +1,10 @@
 package com.nikolaev.user.dto;
 
+import lombok.Getter;
+
 import java.io.Serializable;
 
+@Getter
 public class UserDto implements Serializable {
 
     private  Long id;
@@ -20,30 +23,6 @@ public class UserDto implements Serializable {
         this.lastname = lastname;
         this.email = email;
         this.enabled = enabled;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
     }
 
     @Override

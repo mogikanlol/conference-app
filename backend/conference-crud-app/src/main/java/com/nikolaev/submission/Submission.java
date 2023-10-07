@@ -7,9 +7,12 @@ import com.nikolaev.submission_user_roles.SubmissionUserRoles;
 import com.nikolaev.user.User;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "submission")
 public class Submission {
@@ -34,7 +37,7 @@ public class Submission {
 
     // Submission - Document
     @OneToMany(mappedBy = "submission")
-    private List<Document> documents;
+    private List<Document> documents = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -45,75 +48,4 @@ public class Submission {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private SubmissionStatus status;
-
-    public Submission() {
-        this.documents = new ArrayList<>();
-
-    }
-
-    // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public boolean isReviewable() {
-        return reviewable;
-    }
-
-    public void setReviewable(boolean reviewable) {
-        this.reviewable = reviewable;
-    }
-
-    public Conference getConference() {
-        return conference;
-    }
-
-    public void setConference(Conference conference) {
-        this.conference = conference;
-    }
-
-    public List<Document> getDocuments() {
-        return documents;
-    }
-
-    public void setDocuments(List<Document> documents) {
-        this.documents = documents;
-    }
-
-    public SubmissionStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(SubmissionStatus status) {
-        this.status = status;
-    }
-
-    public List<SubmissionUserRoles> getSubmissionUserRoles() {
-        return submissionUserRoles;
-    }
-
-    public void setSubmissionUserRoles(List<SubmissionUserRoles> submissionUserRoles) {
-        this.submissionUserRoles = submissionUserRoles;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
 }

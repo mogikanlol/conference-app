@@ -2,9 +2,11 @@ package com.nikolaev.submission.dto;
 
 import com.nikolaev.document.dto.DocumentDto;
 import com.nikolaev.user.dto.BriefUserDto;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class SubmissionDto {
 
     private Long id;
@@ -30,35 +32,4 @@ public class SubmissionDto {
         this.conferenceId = conferenceId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Boolean getReviewable() {
-        return reviewable;
-    }
-
-    public List<DocumentDto> getDocuments() {
-        return documents;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public BriefUserDto getAuthor() {
-        return author;
-    }
-
-    public List<BriefUserDto> getReviewers() {
-        return reviewers;
-    }
-
-    public Long getConferenceId() {
-        return conferenceId;
-    }
 }

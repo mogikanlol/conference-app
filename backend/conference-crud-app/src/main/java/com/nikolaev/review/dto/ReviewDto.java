@@ -2,9 +2,11 @@ package com.nikolaev.review.dto;
 
 
 import com.nikolaev.user.dto.BriefUserDto;
+import lombok.Getter;
 
 import java.util.Date;
 
+@Getter
 public class ReviewDto {
     private Long id;
     private String title;
@@ -26,31 +28,4 @@ public class ReviewDto {
         this.author = author;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public boolean isSubmitted() {
-        return submitted;
-    }
-
-    public String getEvaluation() {
-        return evaluation;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public BriefUserDto getAuthor() {
-        return author;
-    }
 }

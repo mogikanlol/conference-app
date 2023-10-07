@@ -3,8 +3,11 @@ package com.nikolaev.review.status;
 import com.nikolaev.review.Review;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "review_status")
 public class ReviewStatus {
@@ -19,27 +22,4 @@ public class ReviewStatus {
     @OneToMany(mappedBy = "status")
     private List<Review> reviews;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public ReviewStatusName getName() {
-        return name;
-    }
-
-    public void setName(ReviewStatusName name) {
-        this.name = name;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
 }

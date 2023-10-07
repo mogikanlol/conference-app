@@ -2,10 +2,12 @@ package com.nikolaev.conference.dto;
 
 import com.nikolaev.submission.dto.BriefSubmissionDto;
 import com.nikolaev.user.dto.BriefUserDto;
+import lombok.Getter;
 
 import java.util.Date;
 import java.util.List;
 
+@Getter
 public class ConferenceDto {
     private Long id;
     private String title;
@@ -32,45 +34,5 @@ public class ConferenceDto {
         this.submissions = submissions;
         this.reviewers = reviewers;
         this.organizer = organizer;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getAcronym() {
-        return acronym;
-    }
-
-    public String getWebPage() {
-        return webPage;
-    }
-
-    public Date getExpirationDate() {
-        return expirationDate;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public List<BriefSubmissionDto> getSubmissions() {
-        return submissions;
-    }
-
-    public List<BriefUserDto> getReviewers() {
-        return reviewers;
-    }
-
-    public BriefUserDto getOrganizer() {
-        return organizer;
     }
 }

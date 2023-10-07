@@ -13,13 +13,13 @@ import com.nikolaev.submission.dto.BriefSubmissionDto;
 import com.nikolaev.submission.dto.SubmissionMapper;
 import com.nikolaev.user.User;
 import com.nikolaev.user.UserRepository;
-import com.nikolaev.user.UserService;
 import com.nikolaev.user.dto.BriefUserDto;
 import com.nikolaev.user.dto.BriefUserRolesDto;
 import com.nikolaev.user.dto.UserMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,27 +28,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ConferenceServiceImpl implements ConferenceService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    ConferenceRepository conferenceRepository;
-
-    @Autowired
-    ConferenceRoleListHolderRepository roleListHolderRepository;
-
-    @Autowired
-    ConferenceRoleRepository roleRepository;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ConferenceUserRolesRepository conferenceUserRolesRepository;
+    private final ConferenceRepository conferenceRepository;
+    private final ConferenceRoleListHolderRepository roleListHolderRepository;
+    private final ConferenceRoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final ConferenceUserRolesRepository conferenceUserRolesRepository;
 
     @Override
     public Page<BriefConferenceDto> getAll(Pageable pageable) {

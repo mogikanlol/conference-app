@@ -1,7 +1,10 @@
 package com.nikolaev.conference_request.comment;
 
+import lombok.Getter;
+
 import java.util.Date;
 
+@Getter
 public class ConferenceRequestCommentDto {
     private Long id;
     private Date date;
@@ -16,21 +19,5 @@ public class ConferenceRequestCommentDto {
         this.date = date;
         this.content = content;
         this.status = status;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public int getStatus() {
-        return status;
     }
 }

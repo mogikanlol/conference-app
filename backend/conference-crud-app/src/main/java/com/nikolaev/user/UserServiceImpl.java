@@ -21,9 +21,8 @@ import com.nikolaev.user.dto.BriefUserRolesDto;
 import com.nikolaev.user.dto.UserDto;
 import com.nikolaev.user.dto.UserMapper;
 import com.nikolaev.user.exception.UserNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -33,39 +32,30 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+
+@Slf4j
 @Service
 @PropertySource("classpath:application.properties")
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private Environment env;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private AuthorityRepository authorityRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JavaMailSender emailSender;
-
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private ConferenceUserRolesRepository conferenceUserRolesRepository;
+    private final Environment env;
+    private final UserRepository userRepository;
+    private final AuthorityRepository authorityRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JavaMailSender emailSender;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final ConferenceUserRolesRepository conferenceUserRolesRepository;
 
 
     @Override
     public UserDto save(UserDto user) {
-        logger.debug("in save()");
+        log.debug("in save()");
         return null;
     }
 

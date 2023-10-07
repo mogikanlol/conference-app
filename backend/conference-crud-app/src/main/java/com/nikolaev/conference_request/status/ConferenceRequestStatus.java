@@ -5,8 +5,11 @@ import com.nikolaev.conference_request.ConferenceRequest;
 import com.nikolaev.conference_request.comment.ConferenceRequestComment;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "conference_request_status")
 public class ConferenceRequestStatus {
@@ -24,32 +27,4 @@ public class ConferenceRequestStatus {
     @OneToMany(mappedBy = "status")
     private List<ConferenceRequestComment> requestComments;
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public ConferenceRequestStatusName getName() {
-        return name;
-    }
-
-    public void setName(ConferenceRequestStatusName name) {
-        this.name = name;
-    }
-
-    public List<ConferenceRequest> getConferenceRequests() {
-        return conferenceRequests;
-    }
-
-    public void setConferenceRequests(List<ConferenceRequest> conferenceRequests) {
-        this.conferenceRequests = conferenceRequests;
-    }
-
-    public List<ConferenceRequestComment> getRequestComments() {
-        return requestComments;
-    }
 }

@@ -3,28 +3,26 @@ package com.nikolaev.conference_request;
 import com.nikolaev.conference_request.comment.ConferenceRequestCommentDto;
 import com.nikolaev.conference_request.dto.BriefConferenceRequestDto;
 import com.nikolaev.conference_request.dto.ConferenceRequestDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/requests")
+@RequiredArgsConstructor
 public class ConferenceRequestController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    ConferenceRequestService conferenceRequestService;
+    private final ConferenceRequestService conferenceRequestService;
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity createRequest(@RequestBody ConferenceRequestDto requestDTO) {
-        logger.info("createRequest() is invoked");
-        logger.info(requestDTO.toString());
+        log.info("createRequest() is invoked");
+        log.info(requestDTO.toString());
         conferenceRequestService.createRequest(requestDTO);
         return ResponseEntity.ok(requestDTO);
     }
@@ -41,13 +39,13 @@ public class ConferenceRequestController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity getRequest(@PathVariable("id") Long requestId) {
-        return ResponseEntity.ok(conferenceRequestService.getRequest(requestId));
+    public ConferenceRequestDto getRequest(@PathVariable("id") Long requestId) {
+        return conferenceRequestService.getRequest(requestId);
     }
 
     @RequestMapping(value = "{id}/comments", method = RequestMethod.POST)
-    public ResponseEntity createComment(@RequestBody ConferenceRequestCommentDto commentDto,
+    public ConferenceRequestDto createComment(@RequestBody ConferenceRequestCommentDto commentDto,
                                         @PathVariable("id") Long requestId) {
-        return ResponseEntity.ok(conferenceRequestService.createComment(requestId, commentDto));
+        return conferenceRequestService.createComment(requestId, commentDto);
     }
 }

@@ -3,13 +3,15 @@ package com.nikolaev.conference;
 
 import com.nikolaev.conference_user_roles.ConferenceUserRoles;
 import com.nikolaev.submission.Submission;
-
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "conference")
 public class Conference implements Serializable {
@@ -42,83 +44,5 @@ public class Conference implements Serializable {
 
     // Conference - Submission
     @OneToMany(mappedBy = "conference")
-    private List<Submission> submissions;
-
-    public Conference() {
-        this.submissions = new ArrayList<>();
-    }
-
-    //Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAcronym() {
-        return acronym;
-    }
-
-    public void setAcronym(String acronym) {
-        this.acronym = acronym;
-    }
-
-    public String getWebPage() {
-        return webPage;
-    }
-
-    public void setWebPage(String webPage) {
-        this.webPage = webPage;
-    }
-
-    public Date getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(Date expirationDate) {
-        this.expirationDate = expirationDate;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public List<Submission> getSubmissions() {
-        return submissions;
-    }
-
-    public void setSubmissions(List<Submission> submissions) {
-        this.submissions = submissions;
-    }
-
-    public List<ConferenceUserRoles> getConferenceUserRoles() {
-        return conferenceUserRoles;
-    }
-
-    public void setConferenceUserRoles(List<ConferenceUserRoles> conferenceUserRoles) {
-        this.conferenceUserRoles = conferenceUserRoles;
-    }
+    private List<Submission> submissions = new ArrayList<>();
 }

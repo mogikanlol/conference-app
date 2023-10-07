@@ -2,29 +2,25 @@ package com.nikolaev.document;
 
 import com.nikolaev.review.ReviewService;
 import com.nikolaev.review.dto.ReviewDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/api")
+@RequiredArgsConstructor
 public class DocumentController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private DocumentService documentService;
-
-    @Autowired
-    private ReviewService reviewService;
+    private final DocumentService documentService;
+    private final ReviewService reviewService;
 
 //    @RequestMapping(value = "/conferences/{conferenceId}/submissions/{submissionId}/documents", method = RequestMethod.POST,
 //            consumes = {"multipart/form-data"})
@@ -54,7 +50,7 @@ public class DocumentController {
 //        String mimeType = URLConnection.guessContentTypeFromName(document.getFilename());
 //        logger.debug("mimetype: " + mimeType);
         response.setContentType("application/octet-stream");
-        logger.debug("download filename: " + document.getFilename());
+        log.debug("download filename: " + document.getFilename());
         // https://stackoverflow.com/questions/52443706/angular-httpclient-missing-response-headers/52444472#52444472
         response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
         response.setHeader("Content-Disposition", String.format("attachment; filename=\"" + rusToEngTranlit(document.getFilename()) + "\""));

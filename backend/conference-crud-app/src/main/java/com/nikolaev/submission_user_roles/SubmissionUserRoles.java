@@ -6,7 +6,9 @@ import com.nikolaev.submission_role.SubmissionRole;
 import com.nikolaev.user.User;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+@Data
 @Entity
 @Table(name = "submission_user_roles", uniqueConstraints = @UniqueConstraint(columnNames = {"submission_id", "user_id"}))
 public class SubmissionUserRoles {
@@ -27,36 +29,4 @@ public class SubmissionUserRoles {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private SubmissionRole role;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Submission getSubmission() {
-        return submission;
-    }
-
-    public void setSubmission(Submission submission) {
-        this.submission = submission;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public SubmissionRole getRole() {
-        return role;
-    }
-
-    public void setRole(SubmissionRole role) {
-        this.role = role;
-    }
 }

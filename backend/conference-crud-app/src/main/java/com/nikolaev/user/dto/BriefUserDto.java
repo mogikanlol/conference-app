@@ -1,5 +1,8 @@
 package com.nikolaev.user.dto;
 
+import lombok.Getter;
+
+@Getter
 public class BriefUserDto {
     protected Long id;
     protected String username;
@@ -20,25 +23,5 @@ public class BriefUserDto {
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
     }
 }

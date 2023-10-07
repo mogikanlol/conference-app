@@ -1,7 +1,10 @@
 package com.nikolaev.conference.dto;
 
+import lombok.Getter;
+
 import java.util.Date;
 
+@Getter
 public class BriefConferenceDto {
 
     private Long id;
@@ -14,17 +17,5 @@ public class BriefConferenceDto {
         this.id = id;
         this.title = title;
         this.expirationDate = expirationDate;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Date getExpirationDate() {
-        return expirationDate;
     }
 }

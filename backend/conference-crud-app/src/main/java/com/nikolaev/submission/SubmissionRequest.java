@@ -2,9 +2,13 @@ package com.nikolaev.submission;
 
 
 import com.nikolaev.submission.status.dto.SubmissionStatusDto;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
+@Getter
+@Setter
 public class SubmissionRequest implements Serializable {
 
     private String title;
@@ -16,22 +20,6 @@ public class SubmissionRequest implements Serializable {
 
     public SubmissionRequest(String title, SubmissionStatusDto status) {
         this.title = title;
-        this.status = status;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public SubmissionStatusDto getStatus() {
-        return status;
-    }
-
-    public void setStatus(SubmissionStatusDto status) {
         this.status = status;
     }
 

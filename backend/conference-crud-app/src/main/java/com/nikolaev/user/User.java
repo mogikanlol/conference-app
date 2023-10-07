@@ -7,10 +7,15 @@ import com.nikolaev.submission.Submission;
 import com.nikolaev.submission_user_roles.SubmissionUserRoles;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class User {
@@ -94,138 +99,6 @@ public class User {
     // User(reviewer) - Review
     @OneToMany(mappedBy = "author")
     private List<Review> reviews;
-
-    // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public boolean isConfirmed() {
-        return confirmed;
-    }
-
-    public void setConfirmed(boolean confirmed) {
-        this.confirmed = confirmed;
-    }
-
-    public String getConfirmationToken() {
-        return confirmationToken;
-    }
-
-    public void setConfirmationToken(String confirmationToken) {
-        this.confirmationToken = confirmationToken;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Date getLastPasswordResetDate() {
-        return lastPasswordResetDate;
-    }
-
-    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
-        this.lastPasswordResetDate = lastPasswordResetDate;
-    }
-
-    public List<Authority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(List<Authority> authorities) {
-        this.authorities = authorities;
-    }
-
-
-    public List<ConferenceRequest> getRequests() {
-        return requests;
-    }
-
-    public void setRequests(List<ConferenceRequest> requests) {
-        this.requests = requests;
-    }
-
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    public List<ConferenceUserRoles> getConferenceUserRoles() {
-        return conferenceUserRoles;
-    }
-
-    public void setConferenceUserRoles(List<ConferenceUserRoles> conferenceUserRoles) {
-        this.conferenceUserRoles = conferenceUserRoles;
-    }
-
-    public List<SubmissionUserRoles> getSubmissionUserRoles() {
-        return submissionUserRoles;
-    }
-
-    public void setSubmissionUserRoles(List<SubmissionUserRoles> submissionUserRoles) {
-        this.submissionUserRoles = submissionUserRoles;
-    }
-
-    public List<Submission> getSubmissions() {
-        return submissions;
-    }
-
-    public void setSubmissions(List<Submission> submissions) {
-        this.submissions = submissions;
-    }
 
     @Override
     public boolean equals(Object obj) {

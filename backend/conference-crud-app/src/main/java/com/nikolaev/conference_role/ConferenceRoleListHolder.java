@@ -3,9 +3,12 @@ package com.nikolaev.conference_role;
 import com.nikolaev.conference_user_roles.ConferenceUserRoles;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.util.List;
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "role_list")
 public class ConferenceRoleListHolder {
@@ -13,7 +16,6 @@ public class ConferenceRoleListHolder {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_list_id_generator")
     @SequenceGenerator(name = "role_list_id_generator", sequenceName = "role_list_id_seq", allocationSize = 1)
     private Long id;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "role_list_roles",
@@ -25,28 +27,10 @@ public class ConferenceRoleListHolder {
     @OneToMany(mappedBy = "roleList")
     private List<ConferenceUserRoles> conferenceUserRoles;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Set<ConferenceRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<ConferenceRole> roles) {
-        this.roles = roles;
-    }
-
-    public List<ConferenceUserRoles> getConferenceUserRoles() {
-        return conferenceUserRoles;
-    }
-
-    public void setConferenceUserRoles(List<ConferenceUserRoles> conferenceUserRoles) {
-        this.conferenceUserRoles = conferenceUserRoles;
-    }
-
 }
+
+// role_list_roles
+// role_list_id == role_list.id
+// role_id  === conference_role.id
+
+// list of conference roles

@@ -1,9 +1,11 @@
 package com.nikolaev.conference;
 
 import com.nikolaev.submission.status.SubmissionStatusName;
+import lombok.Getter;
 
 import java.io.Serializable;
 
+@Getter
 public class ConferenceStatistic implements Serializable {
     Long submissionAmount;
     Long submissionAcceptedAmount;
@@ -17,26 +19,6 @@ public class ConferenceStatistic implements Serializable {
         this.reviewAmount = countReviewAmount(conference);
         this.documentAmount = countDocumentAmount(conference);
         this.participantAmount = countParticipantAmount(conference);
-    }
-
-    public Long getSubmissionAmount() {
-        return submissionAmount;
-    }
-
-    public Long getSubmissionAcceptedAmount() {
-        return submissionAcceptedAmount;
-    }
-
-    public Long getReviewAmount() {
-        return reviewAmount;
-    }
-
-    public Long getDocumentAmount() {
-        return documentAmount;
-    }
-
-    public Long getParticipantAmount() {
-        return participantAmount;
     }
 
     private Long countSubmissionAmount(Conference conference) {

@@ -1,9 +1,11 @@
 package com.nikolaev.submission.dto;
 
 import com.nikolaev.user.dto.BriefUserDto;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class BriefSubmissionDto {
     private Long id;
     private String title;
@@ -22,23 +24,4 @@ public class BriefSubmissionDto {
         this.reviewers = reviewers;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public BriefUserDto getAuthor() {
-        return author;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public List<BriefUserDto> getReviewers() {
-        return reviewers;
-    }
 }

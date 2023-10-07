@@ -5,10 +5,7 @@ import com.nikolaev.security.service.JwtAuthenticationResponse;
 import com.nikolaev.user.User;
 import com.nikolaev.user.UserRepository;
 import com.nikolaev.user.dto.UserMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mobile.device.Device;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,21 +21,13 @@ import java.util.*;
 
 
 @Service
+@RequiredArgsConstructor
 public class SignupServiceImpl implements SignupService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UserDetailsService userDetailsService;
 
 
     public JwtAuthenticationResponse signup(SignupRequest signupRequest) throws SignupException {

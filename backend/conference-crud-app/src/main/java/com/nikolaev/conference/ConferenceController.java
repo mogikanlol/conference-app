@@ -1,6 +1,7 @@
 package com.nikolaev.conference;
 
 import com.nikolaev.conference.dto.BriefConferenceDto;
+import com.nikolaev.conference.dto.ConferenceDto;
 import com.nikolaev.conference.exception.ConferenceNotFoundException;
 import com.nikolaev.conference_role.ConferenceRoleName;
 import com.nikolaev.domain.ApiError;
@@ -9,6 +10,7 @@ import com.nikolaev.submission.dto.BriefSubmissionDto;
 import com.nikolaev.submission.dto.SubmissionDto;
 import com.nikolaev.user.UserService;
 import com.nikolaev.user.dto.BriefUserRolesDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,16 +28,14 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/conferences")
+@RequiredArgsConstructor
 public class ConferenceController {
 
-    @Autowired
-    private ConferenceService conferenceService;
+    private final ConferenceService conferenceService;
 
-    @Autowired
-    private SubmissionService submissionService;
+    private final SubmissionService submissionService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
 
     @RequestMapping(method = RequestMethod.GET)
@@ -48,8 +48,8 @@ public class ConferenceController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ResponseEntity getConference(@PathVariable("id") Long id) throws ConferenceNotFoundException {
-        return ResponseEntity.ok(conferenceService.getConference(id));
+    public ConferenceDto getConference(@PathVariable("id") Long id) throws ConferenceNotFoundException {
+        return conferenceService.getConference(id);
     }
 
     @RequestMapping(value = "{id}/submissions", method = RequestMethod.GET)
@@ -124,16 +124,16 @@ public class ConferenceController {
     }
 
     @RequestMapping(value = "{conferenceId}/users/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity changeRoles(@PathVariable("conferenceId") Long conferenceId,
+    public BriefUserRolesDto changeRoles(@PathVariable("conferenceId") Long conferenceId,
                                       @PathVariable("userId") Long userId,
                                       @RequestBody Set<Integer> roles) {
-        return ResponseEntity.ok(conferenceService.changeRoles(conferenceId, userId, roles));
+        return conferenceService.changeRoles(conferenceId, userId, roles);
     }
 
     @RequestMapping(value = "{conferenceId}/users/{userId}", method = RequestMethod.GET)
-    public ResponseEntity getUserRoles(@PathVariable("conferenceId") Long conferenceId,
+    public BriefUserRolesDto getUserRoles(@PathVariable("conferenceId") Long conferenceId,
                                        @PathVariable("userId") Long userId) {
-        return ResponseEntity.ok(conferenceService.getUserRoles(conferenceId, userId));
+        return conferenceService.getUserRoles(conferenceId, userId);
     }
 
     @RequestMapping(value = "{conferenceId}/invite", method = RequestMethod.POST)
@@ -147,7 +147,7 @@ public class ConferenceController {
     }
 
     @ExceptionHandler(ConferenceNotFoundException.class)
-    public ResponseEntity handleConferenceNotFoundException(Exception e) {
+    public ResponseEntity<ApiError> handleConferenceNotFoundException(Exception e) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST,
                 e.getMessage(),
                 e.getMessage());

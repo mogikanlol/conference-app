@@ -3,11 +3,13 @@ package com.nikolaev.conference_request.dto;
 
 import com.nikolaev.conference_request.comment.ConferenceRequestCommentDto;
 import com.nikolaev.user.dto.BriefUserDto;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+@Getter
 public class ConferenceRequestDto implements Serializable {
 
     private Long id;
@@ -34,45 +36,5 @@ public class ConferenceRequestDto implements Serializable {
         this.comments = comments;
         this.status = status;
         this.expirationDate = expirationDate;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getAcronym() {
-        return acronym;
-    }
-
-    public String getWebPage() {
-        return webPage;
-    }
-
-    public BriefUserDto getOrganizer() {
-        return organizer;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public List<ConferenceRequestCommentDto> getComments() {
-        return comments;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public Date getExpirationDate() {
-        return expirationDate;
     }
 }

@@ -2,12 +2,10 @@ package com.nikolaev.submission;
 
 import com.nikolaev.conference.Conference;
 import com.nikolaev.conference.ConferenceRepository;
-import com.nikolaev.conference_role.ConferenceRoleListHolderRepository;
 import com.nikolaev.document.Document;
 import com.nikolaev.document.DocumentRepository;
 import com.nikolaev.document.dto.DocumentDto;
 import com.nikolaev.document.dto.DocumentMapper;
-import com.nikolaev.review.ReviewRepository;
 import com.nikolaev.submission.dto.BriefSubmissionDto;
 import com.nikolaev.submission.dto.SubmissionDto;
 import com.nikolaev.submission.dto.SubmissionMapper;
@@ -21,9 +19,8 @@ import com.nikolaev.submission_user_roles.SubmissionUserRoles;
 import com.nikolaev.submission_user_roles.SubmissionUserRolesRepository;
 import com.nikolaev.user.User;
 import com.nikolaev.user.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,46 +31,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class SubmissionServiceImpl implements SubmissionService {
 
-    //    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final static Logger logger = LoggerFactory.getLogger(SubmissionServiceImpl.class);
-
-    @Autowired
-    SubmissionRepository submissionRepository;
-
-    @Autowired
-    SubmissionRoleRepository submissionRoleRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ConferenceRepository conferenceRepository;
-
-    @Autowired
-    DocumentRepository documentRepository;
-
-    @Autowired
-    ReviewRepository reviewRepository;
-
-    @Autowired
-    SubmissionStatusRepository submissionStatusRepository;
-
-    @Autowired
-    SubmissionUserRolesRepository submissionUserRolesRepository;
-
-    @Autowired
-    SubmissionRoleRepository roleRepository;
-
-    @Autowired
-    ConferenceRoleListHolderRepository roleListHolderRepository;
+    private final SubmissionRepository submissionRepository;
+    private final SubmissionRoleRepository submissionRoleRepository;
+    private final UserRepository userRepository;
+    private final ConferenceRepository conferenceRepository;
+    private final DocumentRepository documentRepository;
+    private final SubmissionStatusRepository submissionStatusRepository;
+    private final SubmissionUserRolesRepository submissionUserRolesRepository;
+    private final SubmissionRoleRepository roleRepository;
 
     @Override
     public void save(MultipartFile file, SubmissionDto submissionDto, Long conferenceId) throws IOException {
-        logger.debug("SubmissionService: save() is invoked");
-        logger.debug("SubmissionService: save(): " + submissionDto.toString());
+        log.debug("SubmissionService: save() is invoked");
+        log.debug("SubmissionService: save(): " + submissionDto.toString());
 
         // Fetching author
         User user = userRepository.findByUsername(submissionDto.getAuthor().getUsername());
@@ -93,7 +68,7 @@ public class SubmissionServiceImpl implements SubmissionService {
             status = submissionStatusRepository.findByName(SubmissionStatusName.PENDING);
         }
         submission.setStatus(status);
-        logger.debug("getOriginalFilename(): " + file.getOriginalFilename());
+        log.debug("getOriginalFilename(): " + file.getOriginalFilename());
         document.setFilename(   file.getOriginalFilename());
         document.setSubmission(submission);
         document.setData(file.getBytes());
@@ -119,8 +94,8 @@ public class SubmissionServiceImpl implements SubmissionService {
         submissionUserRolesRepository.save(userRoles);
 
 
-        logger.debug("SubmissionService: after save()");
-        logger.debug("SubmissionService: userRoles.getUser(): " + userRoles.getUser());
+        log.debug("SubmissionService: after save()");
+        log.debug("SubmissionService: userRoles.getUser(): " + userRoles.getUser());
     }
 
     @Override
@@ -141,7 +116,7 @@ public class SubmissionServiceImpl implements SubmissionService {
 
     @Override
     public SubmissionDto setOnReview(Long submissionId, Boolean reviewable) {
-        logger.debug("IN SET ON REVIEW");
+        log.debug("IN SET ON REVIEW");
         Submission submission = submissionRepository.getOne(submissionId);
         submission.setReviewable(reviewable);
 
@@ -151,7 +126,7 @@ public class SubmissionServiceImpl implements SubmissionService {
 
     @Override
     public void addReviewers(Long submissionId, List<Long> reviewers) {
-        logger.info("ADDREVIEWERS");
+        log.info("ADDREVIEWERS");
         List<User> userList = reviewers.stream().map(userRepository::getOne).collect(Collectors.toList());
         Submission submission = submissionRepository.getOne(submissionId);
         SubmissionRole reviewerRole = submissionRoleRepository.findByName(SubmissionRoleName.REVIEWER);
@@ -204,7 +179,7 @@ public class SubmissionServiceImpl implements SubmissionService {
             for (SubmissionUserRoles userRoles : submission.getSubmissionUserRoles()) {
                 // if users exists and has reviewer role
                 if (userRoles.getUser().equals(user) && userRoles.getRole().equals(reviewerRole)) {
-                    logger.info("in the if");
+                    log.info("in the if");
                     submissionUserRolesRepository.delete(userRoles);
                 }
             }

@@ -8,6 +8,7 @@ import com.nikolaev.user.User;
 import com.nikolaev.user.UserService;
 import com.nikolaev.user.dto.UserMapper;
 import com.nikolaev.user.exception.UserNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "api/auth/signin")
+@RequiredArgsConstructor
 public class SigninController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -32,17 +34,10 @@ public class SigninController {
     private String tokenHeader = "authorization";
 
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private SigninService signinService;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UserDetailsService userDetailsService;
+    private final UserService userService;
+    private final SigninService signinService;
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) throws AuthenticationException {

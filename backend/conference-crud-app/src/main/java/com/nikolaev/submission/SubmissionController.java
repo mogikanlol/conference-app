@@ -1,14 +1,15 @@
 package com.nikolaev.submission;
 
+import com.nikolaev.document.dto.DocumentDto;
+import com.nikolaev.submission.dto.SubmissionDto;
 import com.nikolaev.user.UserService;
 import com.nikolaev.user.dto.BriefUserDto;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,16 +18,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "api")
+@RequiredArgsConstructor
 public class SubmissionController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    SubmissionService submissionService;
-
-    @Autowired
-    UserService userService;
-
+    private final SubmissionService submissionService;
+    private final UserService userService;
 
 
     /**
@@ -36,9 +34,9 @@ public class SubmissionController {
      * @return Submission
      */
     @RequestMapping(value = "/submissions/{submissionId}", method = RequestMethod.GET)
-    public ResponseEntity getSubmission(@PathVariable("submissionId") Long submissionId) {
+    public SubmissionDto getSubmission(@PathVariable("submissionId") Long submissionId) {
         logger.info("in getSubmission()");
-        return ResponseEntity.ok(submissionService.getSubmission(submissionId));
+        return submissionService.getSubmission(submissionId);
     }
 
     /**
@@ -47,8 +45,8 @@ public class SubmissionController {
      * @return Submissions from specific conference
      */
     @RequestMapping(value = "/submissions", method = RequestMethod.GET)
-    public ResponseEntity getAll(@RequestParam(value = "reviewable", required = false) boolean reviewable) {
-        return ResponseEntity.ok(submissionService.getAll(reviewable));
+    public List<SubmissionDto> getAll(@RequestParam(value = "reviewable", required = false) boolean reviewable) {
+        return submissionService.getAll(reviewable);
     }
 
 
@@ -58,9 +56,9 @@ public class SubmissionController {
      * @return
      */
     @RequestMapping(value = "/submissions/{submissionId}/reviewable", method = RequestMethod.PUT)
-    public ResponseEntity setReviewable(@PathVariable("submissionId") Long submissionId,
+    public SubmissionDto setReviewable(@PathVariable("submissionId") Long submissionId,
                                         @RequestBody String reviewable) {
-        return ResponseEntity.ok(submissionService.setOnReview(submissionId, Boolean.valueOf(reviewable)));
+        return submissionService.setOnReview(submissionId, Boolean.valueOf(reviewable));
     }
 
     /**
@@ -86,16 +84,14 @@ public class SubmissionController {
 
     @RequestMapping(value = "/submissions/{submissionId}/documents", method = RequestMethod.POST,
             consumes = {"multipart/form-data"})
-    public ResponseEntity uploadDocument(@PathVariable("submissionId") Long submissionId, @RequestPart("file") MultipartFile file) throws IOException {
-        return ResponseEntity.ok(submissionService.uploadDocument(submissionId, file));
+    public SubmissionDto uploadDocument(@PathVariable("submissionId") Long submissionId, @RequestPart("file") MultipartFile file) throws IOException {
+        return submissionService.uploadDocument(submissionId, file);
     }
 
     @RequestMapping(value = "/submissions/{submissionId}/documents", method = RequestMethod.GET)
-    public ResponseEntity getDocuments(@PathVariable("submissionId") Long submissionId) {
-        return ResponseEntity.ok(submissionService.getDocuments(submissionId));
+    public List<DocumentDto> getDocuments(@PathVariable("submissionId") Long submissionId) {
+        return submissionService.getDocuments(submissionId);
     }
-
-
 
 
 }

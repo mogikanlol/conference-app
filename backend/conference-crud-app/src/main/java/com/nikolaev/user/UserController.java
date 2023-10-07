@@ -5,9 +5,7 @@ import com.nikolaev.conference_request.dto.BriefConferenceRequestDto;
 import com.nikolaev.security.JwtTokenUtil;
 import com.nikolaev.user.dto.BriefUserDto;
 import com.nikolaev.user.dto.UserDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -19,22 +17,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "api/users")
+@RequiredArgsConstructor
 public class UserController {
 
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ConferenceRequestService conferenceRequestService;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final UserDetailsService userDetailsService;
+    private final UserService userService;
+    private final ConferenceRequestService conferenceRequestService;
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> createUser(@RequestBody UserDto user, Device device) {

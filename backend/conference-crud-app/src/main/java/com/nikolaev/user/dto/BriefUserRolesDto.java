@@ -1,7 +1,10 @@
 package com.nikolaev.user.dto;
 
+import lombok.Getter;
+
 import java.util.List;
 
+@Getter
 public class BriefUserRolesDto extends BriefUserDto {
     private List<Integer> roles;
 
@@ -14,7 +17,4 @@ public class BriefUserRolesDto extends BriefUserDto {
         this.roles = roles;
     }
 
-    public List<Integer> getRoles() {
-        return roles;
-    }
 }

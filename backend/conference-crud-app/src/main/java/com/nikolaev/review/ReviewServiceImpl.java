@@ -14,9 +14,7 @@ import com.nikolaev.submission.status.SubmissionStatusRepository;
 import com.nikolaev.submission_role.SubmissionRoleName;
 import com.nikolaev.user.User;
 import com.nikolaev.user.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -25,34 +23,17 @@ import java.util.Comparator;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final JavaMailSender emailSender;
+    private final ReviewRepository reviewRepository;
+    private final DocumentRepository documentRepository;
+    private final ReviewStatusRepository reviewStatusRepository;
+    private final UserRepository userRepository;
+    private final SubmissionStatusRepository submissionStatusRepository;
+    private final SubmissionRepository submissionRepository;
 
-    @Autowired
-    private JavaMailSender emailSender;
-
-    private ReviewRepository reviewRepository;
-    private DocumentRepository documentRepository;
-    private ReviewStatusRepository reviewStatusRepository;
-    private UserRepository userRepository;
-    private SubmissionStatusRepository submissionStatusRepository;
-    private SubmissionRepository submissionRepository;
-
-    @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository,
-                             DocumentRepository documentRepository,
-                             ReviewStatusRepository reviewStatusRepository,
-                             UserRepository userRepository,
-                             SubmissionStatusRepository submissionStatusRepository,
-                             SubmissionRepository submissionRepository) {
-        this.reviewRepository = reviewRepository;
-        this.documentRepository = documentRepository;
-        this.reviewStatusRepository = reviewStatusRepository;
-        this.userRepository = userRepository;
-        this.submissionStatusRepository = submissionStatusRepository;
-        this.submissionRepository = submissionRepository;
-    }
 
     @Override
     public ReviewDto getReview(Long id) {
