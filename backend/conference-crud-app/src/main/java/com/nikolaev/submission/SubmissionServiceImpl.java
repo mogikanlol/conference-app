@@ -6,6 +6,8 @@ import com.nikolaev.document.Document;
 import com.nikolaev.document.DocumentRepository;
 import com.nikolaev.document.dto.DocumentDto;
 import com.nikolaev.document.dto.DocumentMapper;
+import com.nikolaev.new_role_system.UserRoleInSubm;
+import com.nikolaev.new_role_system.UserRoleInSubmRepo;
 import com.nikolaev.submission.dto.BriefSubmissionDto;
 import com.nikolaev.submission.dto.SubmissionDto;
 import com.nikolaev.submission.dto.SubmissionMapper;
@@ -19,6 +21,7 @@ import com.nikolaev.submission_user_roles.SubmissionUserRoles;
 import com.nikolaev.submission_user_roles.SubmissionUserRolesRepository;
 import com.nikolaev.user.User;
 import com.nikolaev.user.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -44,6 +47,8 @@ public class SubmissionServiceImpl implements SubmissionService {
     private final SubmissionStatusRepository submissionStatusRepository;
     private final SubmissionUserRolesRepository submissionUserRolesRepository;
     private final SubmissionRoleRepository roleRepository;
+
+    private final UserRoleInSubmRepo repo;
 
     @Override
     public void save(MultipartFile file, SubmissionDto submissionDto, Long conferenceId) throws IOException {
@@ -86,8 +91,16 @@ public class SubmissionServiceImpl implements SubmissionService {
         documentRepository.save(document);
 
 
-        SubmissionUserRoles userRoles = new SubmissionUserRoles();
         SubmissionRole author = roleRepository.findByName(SubmissionRoleName.AUTHOR);
+
+        UserRoleInSubm userRoleInSubm = new UserRoleInSubm();
+        userRoleInSubm.setUserId(user.getId());
+        userRoleInSubm.setRole(author.getName());
+        userRoleInSubm.setSubmissionId(submission.getId());
+        repo.save(userRoleInSubm);
+
+        /*
+        SubmissionUserRoles userRoles = new SubmissionUserRoles();
         userRoles.setUser(user);
         userRoles.setRole(author);
         userRoles.setSubmission(submission);
@@ -96,6 +109,8 @@ public class SubmissionServiceImpl implements SubmissionService {
 
         log.debug("SubmissionService: after save()");
         log.debug("SubmissionService: userRoles.getUser(): " + userRoles.getUser());
+
+         */
     }
 
     @Override
@@ -133,7 +148,11 @@ public class SubmissionServiceImpl implements SubmissionService {
 
         // Fetch users from submission conference
         List<User> conferenceUserList = new ArrayList<>();
-        submission.getConference().getConferenceUserRoles().forEach(conferenceUserRoles -> conferenceUserList.add(conferenceUserRoles.getUser()));
+        submission.getConference().getUserRoleInConfList().stream()
+                .map(r -> r.getUser())
+                .distinct()
+                .forEach(r -> conferenceUserList.add(r));
+//        submission.getConference().getConferenceUserRoles().forEach(conferenceUserRoles -> conferenceUserList.add(conferenceUserRoles.getUser()));
 
         outer:
         for (User user : userList) {
@@ -142,16 +161,35 @@ public class SubmissionServiceImpl implements SubmissionService {
                 continue outer;
             // Check if user already has role
             // Author can't be the reviewer
+
+            for (UserRoleInSubm userRoleInSubm : submission.getTest()) {
+                if (userRoleInSubm.getUser().equals(user)) {
+                    continue outer;
+                }
+            }
+            /*
             for (SubmissionUserRoles userRoles : submission.getSubmissionUserRoles()) {
                 if (userRoles.getUser().equals(user))
                     continue outer;
             }
+
+             */
+
+            UserRoleInSubm userRoleInSubm = new UserRoleInSubm();
+            userRoleInSubm.setSubmissionId(submission.getId());
+            userRoleInSubm.setUserId(user.getId());
+            userRoleInSubm.setRole(reviewerRole.getName());
+            repo.save(userRoleInSubm);
+
+            /*
             // Creating new relation between User-Submission-Role
             SubmissionUserRoles submissionUserRoles = new SubmissionUserRoles();
             submissionUserRoles.setSubmission(submission);
             submissionUserRoles.setRole(reviewerRole);
             submissionUserRoles.setUser(user);
             submissionUserRolesRepository.save(submissionUserRoles);
+
+             */
         }
     }
 
@@ -176,6 +214,12 @@ public class SubmissionServiceImpl implements SubmissionService {
         SubmissionRole reviewerRole = submissionRoleRepository.findByName(SubmissionRoleName.REVIEWER);
 
         for (User user : userList) {
+            for (UserRoleInSubm userRoleInSubm : submission.getTest()) {
+                if (userRoleInSubm.getUser().equals(user) && userRoleInSubm.getRole().equals(reviewerRole.getName())) {
+                    repo.delete(userRoleInSubm);
+                }
+            }
+            /*
             for (SubmissionUserRoles userRoles : submission.getSubmissionUserRoles()) {
                 // if users exists and has reviewer role
                 if (userRoles.getUser().equals(user) && userRoles.getRole().equals(reviewerRole)) {
@@ -183,6 +227,9 @@ public class SubmissionServiceImpl implements SubmissionService {
                     submissionUserRolesRepository.delete(userRoles);
                 }
             }
+
+             */
+
         }
     }
 

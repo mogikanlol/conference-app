@@ -32,9 +32,9 @@ public interface UserService {
 
     List<ReviewDto> getReviewList(Long id, Long conferenceId);
 
-    boolean isReviewer(Long userId, Long conferenceId);
+    // boolean isReviewer(Long userId, Long conferenceId);
 
-    Set<ConferenceRole> getUser(Long id);
+    // Set<ConferenceRole> getUser(Long id);
 
     List<BriefSubmissionDto> getSubmissions(Long userId);
 

@@ -12,6 +12,7 @@ import com.nikolaev.conference_request.status.ConferenceRequestStatusName;
 import com.nikolaev.conference_request.status.ConferenceRequestStatusRepository;
 import com.nikolaev.user.User;
 import com.nikolaev.user.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

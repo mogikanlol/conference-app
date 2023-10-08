@@ -2,6 +2,7 @@ package com.nikolaev.submission;
 
 import com.nikolaev.conference.Conference;
 import com.nikolaev.document.Document;
+import com.nikolaev.new_role_system.UserRoleInSubm;
 import com.nikolaev.submission.status.SubmissionStatus;
 import com.nikolaev.submission_user_roles.SubmissionUserRoles;
 import com.nikolaev.user.User;
@@ -48,4 +49,7 @@ public class Submission {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private SubmissionStatus status;
+
+    @OneToMany(mappedBy = "submission")
+    private List<UserRoleInSubm> test;
 }

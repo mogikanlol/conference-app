@@ -9,6 +9,8 @@ import com.nikolaev.conference_request.dto.ConferenceRequestDto;
 import com.nikolaev.conference_role.*;
 import com.nikolaev.conference_user_roles.ConferenceUserRoles;
 import com.nikolaev.conference_user_roles.ConferenceUserRolesRepository;
+import com.nikolaev.new_role_system.UserRoleInConf;
+import com.nikolaev.new_role_system.UserRoleInConfRepo;
 import com.nikolaev.submission.dto.BriefSubmissionDto;
 import com.nikolaev.submission.dto.SubmissionMapper;
 import com.nikolaev.user.User;
@@ -17,9 +19,6 @@ import com.nikolaev.user.dto.BriefUserDto;
 import com.nikolaev.user.dto.BriefUserRolesDto;
 import com.nikolaev.user.dto.UserMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -66,22 +65,24 @@ public class ConferenceServiceImpl implements ConferenceService {
         conference.setCity(request.getCity());
         conference.setCountry(request.getCountry());
         conference.setExpirationDate(request.getExpirationDate());
-        ConferenceUserRoles conferenceUserRoles = new ConferenceUserRoles();
+
+
+
         ConferenceRole creator = roleRepository.findByName(ConferenceRoleName.CREATOR);
-        ConferenceRoleListHolder roleListHolder = new ConferenceRoleListHolder();
-        Set<ConferenceRole> roles = new HashSet<ConferenceRole>() {{
-            add(creator);
-        }};
-        roleListHolder.setRoles(roles);
-        conferenceUserRoles.setConference(conference);
-        conferenceUserRoles.setRoleList(roleListHolder);
-        conferenceUserRoles.setUser(user);
 
         conferenceRepository.save(conference);
-        roleListHolderRepository.save(roleListHolder);
-        conferenceUserRolesRepository.save(conferenceUserRoles);
+
+        UserRoleInConf userRoleInConf = new UserRoleInConf();
+        userRoleInConf.setConference(conference);
+        userRoleInConf.setConferenceId(conference.getId());
+        userRoleInConf.setUserId(user.getId());
+        userRoleInConf.setUser(user);
+        userRoleInConf.setRole(creator.getName().getValue() + 1);
+
+        repo.save(userRoleInConf);
     }
 
+    /*
     @Override
     public List<BriefUserDto> getReviewers(Long id) {
         Conference conference = conferenceRepository.getOne(id);
@@ -95,9 +96,63 @@ public class ConferenceServiceImpl implements ConferenceService {
         return userList.stream().map(UserMapper::toBriefDto).collect(Collectors.toList());
     }
 
-    @Override
-    public BriefUserRolesDto changeRoles(Long conferenceId, Long userId, Set<Integer> roles) {
+     */
 
+    private final UserRoleInConfRepo repo;
+
+    @Override
+    public BriefUserRolesDto changeRoles(Long conferenceId, Long userId, Set<Integer> roles1) {
+        Set<Integer> roles = roles1.stream()
+                .map(x -> x + 1)
+                .collect(Collectors.toSet());
+
+        List<UserRoleInConf> list = repo.getByUserIdAndConferenceId(userId, conferenceId);
+
+        // delete orphans
+        List<UserRoleInConf> forDeletion = list.stream()
+                .filter(x -> !roles.contains(x.getRole()))
+                .toList();
+
+        if (!forDeletion.isEmpty()) {
+            repo.deleteAll(forDeletion);
+        }
+
+        // add new
+        Set<Integer> existingRoles = list.stream()
+                .map(UserRoleInConf::getRole)
+                .filter(roles::contains)
+                .collect(Collectors.toSet());
+
+        Set<Integer> newRoles = roles.stream()
+                .filter(r -> !existingRoles.contains(r))
+                .collect(Collectors.toSet());
+
+        List<UserRoleInConf> forAddition = newRoles.stream()
+                .map(r -> {
+                    UserRoleInConf entity = new UserRoleInConf();
+                    entity.setRole(r);
+                    entity.setUserId(userId);
+                    entity.setConferenceId(conferenceId);
+                    return entity;
+                }).toList();
+        repo.saveAll(forAddition);
+
+        User user = userRepository.getOne(userId);
+        List<Integer> asd = new ArrayList<>();
+        asd.addAll(existingRoles);
+        asd.addAll(newRoles);
+        asd = asd.stream().map(r->r -1).toList();
+        BriefUserRolesDto dto = new BriefUserRolesDto(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getFirstname(),
+                user.getLastname(),
+                asd
+        );
+        return dto;
+
+        /*
         ConferenceUserRoles userRoles = conferenceUserRolesRepository.findByConferenceIdAndUserId(conferenceId, userId);
         ConferenceRoleListHolder roleList = userRoles.getRoleList();
 
@@ -108,10 +163,25 @@ public class ConferenceServiceImpl implements ConferenceService {
         roleListHolderRepository.save(roleList);
 
         return UserMapper.toBriefRolesDto(userRepository.getOne(userId), conferenceId);
+
+         */
     }
 
     @Override
     public BriefUserRolesDto getUserRoles(Long conferenceId, Long userId) {
+        List<UserRoleInConf> list = repo.getByUserIdAndConferenceId(userId, conferenceId);
+        User user = userRepository.getOne(userId);
+        BriefUserRolesDto dto = new BriefUserRolesDto(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getFirstname(),
+                user.getLastname(),
+                list.stream().map(r -> r.getRole() - 1).toList()
+        );
+        return dto;
+
+/*
         Conference conference = conferenceRepository.getOne(conferenceId);
         for (ConferenceUserRoles userRoles : conference.getConferenceUserRoles()) {
             if (userRoles.getUser().getId().equals(userId)) {
@@ -119,6 +189,8 @@ public class ConferenceServiceImpl implements ConferenceService {
             }
         }
         return null;
+
+ */
     }
 
     @Override
@@ -130,6 +202,14 @@ public class ConferenceServiceImpl implements ConferenceService {
                     .anyMatch(conferenceUserRoles -> conferenceUserRoles.getConference().getId().equals(conferenceId))) {
                 return;
             }
+
+            UserRoleInConf userRoleInConf = new UserRoleInConf();
+            userRoleInConf.setConferenceId(conferenceId);
+            userRoleInConf.setUserId(user.getId());
+            userRoleInConf.setRole(ConferenceRoleName.SUBMITTER.getValue() + 1);
+
+            repo.save(userRoleInConf);
+            /*
 
             ConferenceRoleListHolder listHolder = new ConferenceRoleListHolder();
             listHolder.setRoles(new HashSet<ConferenceRole>() {{
@@ -143,6 +223,8 @@ public class ConferenceServiceImpl implements ConferenceService {
             conferenceUserRoles.setUser(user);
             conferenceUserRoles.setRoleList(listHolder);
             conferenceUserRolesRepository.save(conferenceUserRoles);
+
+             */
 
 
         }
@@ -163,6 +245,7 @@ public class ConferenceServiceImpl implements ConferenceService {
         return new ConferenceStatistic(conferenceRepository.getOne(conferenceId));
     }
 
+    /*
     @Override
     public void addUsers(Long id, List<Long> users) {
         Conference conference = conferenceRepository.getOne(id);
@@ -185,6 +268,9 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     }
 
+     */
+
+    /*
     @Override
     public List<BriefUserRolesDto> getUsers(Long id) {
         Conference conference = conferenceRepository.getOne(id);
@@ -193,6 +279,9 @@ public class ConferenceServiceImpl implements ConferenceService {
         return userList.stream().map(user -> UserMapper.toBriefRolesDto(user, id)).collect(Collectors.toList());
     }
 
+     */
+
+    /*
     @Override
     public void addReviewers(Long id, List<Long> reviewers) {
         List<User> userList = reviewers.stream().map(userRepository::getOne).collect(Collectors.toList());
@@ -214,6 +303,8 @@ public class ConferenceServiceImpl implements ConferenceService {
         }
 
     }
+
+     */
 
     @Override
     public List<BriefSubmissionDto> getSubmissions(Long id, Pageable pageable) {

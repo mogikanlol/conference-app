@@ -43,6 +43,12 @@ public class ConferenceStatistic implements Serializable {
     }
 
     private Long countParticipantAmount(Conference conference) {
-       return conference.getConferenceUserRoles().stream().map(conferenceUserRoles -> conferenceUserRoles.getUser()).count();
+        return conference.getUserRoleInConfList().stream()
+                .map(r -> r.getUser())
+                .distinct()
+                .count();
+
+
+        // return conference.getConferenceUserRoles().stream().map(conferenceUserRoles -> conferenceUserRoles.getUser()).count();
     }
 }

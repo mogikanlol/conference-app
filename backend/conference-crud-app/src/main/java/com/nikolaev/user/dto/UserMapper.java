@@ -1,8 +1,5 @@
 package com.nikolaev.user.dto;
 
-import com.nikolaev.conference_role.ConferenceRole;
-import com.nikolaev.conference_role.ConferenceRoleName;
-import com.nikolaev.conference_user_roles.ConferenceUserRoles;
 import com.nikolaev.security.JwtUser;
 import com.nikolaev.user.User;
 import org.slf4j.Logger;
@@ -63,10 +60,12 @@ public class UserMapper {
                 user.getEmail(),
                 user.getFirstname(),
                 user.getLastname(),
-                mapConferenceUserRoles(user, conferenceId)
+                user.getUserRoleInConfList().stream().filter(x -> x.getConferenceId() == conferenceId).map(x -> x.getRole() -1).toList()
+//                mapConferenceUserRoles(user, conferenceId)
         );
     }
 
+    /*
     private static List<Integer> mapConferenceUserRoles(User user, Long conferenceId) {
         for (ConferenceUserRoles userRoles : user.getConferenceUserRoles()) {
             if (userRoles.getConference().getId().equals(conferenceId))
@@ -74,6 +73,8 @@ public class UserMapper {
         }
         return null;
     }
+
+     */
 
     public static List<UserDto> toListDto(List<User> users) {
         return users.stream().map(UserMapper::toDto).collect(Collectors.toList());

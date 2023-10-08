@@ -96,10 +96,13 @@ public class ConferenceController {
         return null;
     }
 
+    /*
     @RequestMapping(value = "{id}/reviewers", method = RequestMethod.POST)
     public void addReviewers(@PathVariable("id") Long id, @RequestBody List<Long> reviewers) {
         conferenceService.addReviewers(id, reviewers);
     }
+
+     */
 
     @RequestMapping(value = "{id}/reviewers", method = RequestMethod.GET)
     public Page<BriefUserRolesDto> getReviewers(@PathVariable("id") Long id,
