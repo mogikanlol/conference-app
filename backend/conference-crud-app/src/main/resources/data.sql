@@ -1,15 +1,15 @@
 INSERT INTO users (id, email, firstname, lastname, password, username, enabled, confirmed)
 VALUES
-(1, 'creator@google.com', 'Conference', 'Creator',
-'$2a$10$vXo124lhpeiifSslvwROqutxcIiyQliIJq4lozW7hlJbk.Zm3xBIa', 'creator@google.com', TRUE, FALSE),
-(2, 'nikolaevdmv@gmail.com', 'Plain', 'User',
-'$2a$10$vXo124lhpeiifSslvwROqutxcIiyQliIJq4lozW7hlJbk.Zm3xBIa', 'nikolaevdmv@gmail.com', TRUE, FALSE),
-(3, 'first_reviewer@google.com', 'First', 'Reviewer',
-'$2a$10$vXo124lhpeiifSslvwROqutxcIiyQliIJq4lozW7hlJbk.Zm3xBIa', 'first_reviewer@google.com', TRUE, FALSE),
-(4, 'second_reviewer@google.com', 'Second', 'Reviewer',
-'$2a$10$vXo124lhpeiifSslvwROqutxcIiyQliIJq4lozW7hlJbk.Zm3xBIa', 'second_reviewer@google.com', TRUE, FALSE),
-(5, 'test@google.com', 'Plain', 'User',
-'$2a$10$vXo124lhpeiifSslvwROqutxcIiyQliIJq4lozW7hlJbk.Zm3xBIa', 'test@google.com', TRUE, FALSE);
+(1, 'creator@test.com', 'Conference', 'Creator',
+'$2a$10$vXo124lhpeiifSslvwROqutxcIiyQliIJq4lozW7hlJbk.Zm3xBIa', 'creator@test.com', TRUE, FALSE),
+(2, 'plain_user1@test.com', 'Plain1', 'User1',
+'$2a$10$vXo124lhpeiifSslvwROqutxcIiyQliIJq4lozW7hlJbk.Zm3xBIa', 'plain_user1@test.com', TRUE, FALSE),
+(3, 'first_reviewer@test.com', 'First', 'Reviewer',
+'$2a$10$vXo124lhpeiifSslvwROqutxcIiyQliIJq4lozW7hlJbk.Zm3xBIa', 'first_reviewer@test.com', TRUE, FALSE),
+(4, 'second_reviewer@test.com', 'Second', 'Reviewer',
+'$2a$10$vXo124lhpeiifSslvwROqutxcIiyQliIJq4lozW7hlJbk.Zm3xBIa', 'second_reviewer@test.com', TRUE, FALSE),
+(5, 'plain_user2@test.com', 'Plain2', 'User2',
+'$2a$10$vXo124lhpeiifSslvwROqutxcIiyQliIJq4lozW7hlJbk.Zm3xBIa', 'plain_user2@test.com', TRUE, FALSE);
 ALTER sequence users_id_seq restart with 6;
 
 INSERT INTO conference_request_status (id, name)
