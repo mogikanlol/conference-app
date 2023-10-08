@@ -1,20 +1,14 @@
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve, ResolveFn, RouterStateSnapshot} from '@angular/router';
+import {inject} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Conference} from '../../../shared/model/conference/conference.model';
 import {ConferenceService} from '../../service/conference.service';
 
-@Injectable()
-export class ConferenceResolve implements Resolve<Conference> {
+export const ConferenceResolve: ResolveFn<Conference> =
 
-
-  constructor(private conferenceService: ConferenceService) {
-  }
-
-  resolve(route: ActivatedRouteSnapshot,
-          state: RouterStateSnapshot): Observable<Conference> | Promise<Conference> | Conference {
+  (route: ActivatedRouteSnapshot,
+          state: RouterStateSnapshot) => {
+         console.log("in conference resolve");   
     const conferenceId = route.paramMap.get('conferenceId');
-    return this.conferenceService.getConference(conferenceId!);
+    return inject(ConferenceService).getConference(conferenceId!);
   }
-
-}

@@ -11,7 +11,7 @@ import {ConferenceSubmissionsResolve} from './conference/conference-submissions.
   providers: [
     SubmissionResolve,
     UserResolve,
-    ConferenceResolve,
+    // ConferenceResolve,
     ConferenceRequestResolve,
     ConferenceRequestListResolve,
     UserConferenceResolve,
