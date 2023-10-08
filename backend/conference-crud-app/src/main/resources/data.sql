@@ -122,3 +122,8 @@ VALUES
 
 (5,1, 1, 5);
 ALTER sequence user_role_in_conf_id_seq restart with 6;
+
+
+INSERT INTO user_role_in_subm (id, role, submission_id, user_id)
+VALUES (1, 'AUTHOR', 1, 1);
+ALTER sequence user_role_in_subm_id_seq restart with 2;

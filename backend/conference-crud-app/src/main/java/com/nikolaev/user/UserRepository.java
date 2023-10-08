@@ -32,9 +32,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findAllByConferenceId(Long conferenceId, Pageable pageable);
 
 
+    @Query("select u from User u join u.test test where test.submissionId = ?1 and " +
+            "role = ?2")
+    Page<User> findAllBySubmissionIdAndRoleName(Long submissionId, SubmissionRoleName roleName, Pageable pageable);
+
+/*
     @Query("select u from User u join u.submissionUserRoles userRoles where userRoles.submission.id = ?1 and " +
             "userRoles.role.name = ?2")
     Page<User> findAllBySubmissionIdAndRoleName(Long submissionId, SubmissionRoleName roleName, Pageable pageable);
+
+ */
 
 //    @Query("select u from User u join u.conferenceUserRoles userRoles " +
 //            "join userRoles.roleList roleList " +

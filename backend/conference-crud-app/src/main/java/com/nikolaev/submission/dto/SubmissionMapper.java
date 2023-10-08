@@ -5,6 +5,7 @@ import com.nikolaev.submission.Submission;
 import com.nikolaev.submission.status.SubmissionStatus;
 import com.nikolaev.submission_role.SubmissionRoleName;
 import com.nikolaev.submission_user_roles.SubmissionUserRoles;
+import com.nikolaev.user.User;
 import com.nikolaev.user.dto.BriefUserDto;
 import com.nikolaev.user.dto.UserMapper;
 import org.slf4j.Logger;
@@ -21,14 +22,33 @@ public final class SubmissionMapper {
     }
 
     public static SubmissionDto toDto(Submission entity) {
+        User author1 = entity.getAuthor();
+        BriefUserDto author = new BriefUserDto(
+                author1.getId(),
+                author1.getUsername(),
+                author1.getEmail(),
+                author1.getFirstname(),
+                author1.getLastname()
+        );
+
+        List<BriefUserDto> reviewers = entity.getTest().stream()
+                .filter(r -> r.getRole().equals(SubmissionRoleName.REVIEWER))
+                .map(r -> r.getUser())
+                .distinct()
+                .map(r -> {
+                    return new BriefUserDto(r.getId(), r.getUsername(), r.getEmail(), r.getFirstname(), r.getLastname());
+                }).toList();
+
         return new SubmissionDto(
                 entity.getId(),
                 entity.getTitle(),
                 entity.isReviewable(),
                 DocumentMapper.toListDto(entity.getDocuments()),
                 mapStatus(entity.getStatus()),
-                mapAuthor(entity),
-                mapReviewers(entity),
+                author,
+//                mapAuthor(entity),
+                reviewers,
+//                mapReviewers(entity),
                 entity.getConference().getId()
         );
     }
@@ -38,12 +58,31 @@ public final class SubmissionMapper {
     }
 
     public static BriefSubmissionDto toBriefDto(Submission entity) {
+        User author1 = entity.getAuthor();
+        BriefUserDto author = new BriefUserDto(
+                author1.getId(),
+                author1.getUsername(),
+                author1.getEmail(),
+                author1.getFirstname(),
+                author1.getLastname()
+        );
+
+        List<BriefUserDto> reviewers = entity.getTest().stream()
+                .filter(r -> r.getRole().equals(SubmissionRoleName.REVIEWER))
+                .map(r -> r.getUser())
+                .distinct()
+                .map(r -> {
+                    return new BriefUserDto(r.getId(), r.getUsername(), r.getEmail(), r.getFirstname(), r.getLastname());
+                }).toList();
+
         return new BriefSubmissionDto(
                 entity.getId(),
                 entity.getTitle(),
-                mapAuthor(entity),
+                author,
+//                mapAuthor(entity),
                 entity.getStatus().getName().getValue(),
-                mapReviewers(entity)
+                reviewers
+//                mapReviewers(entity)
         );
     }
 
@@ -55,7 +94,7 @@ public final class SubmissionMapper {
         return conferences.stream().map(SubmissionMapper::toBriefDto).collect(Collectors.toList());
     }
 
-
+/*
     private static BriefUserDto mapAuthor(Submission entity) {
         List<SubmissionUserRoles> userRoles = entity.getSubmissionUserRoles();
         for (SubmissionUserRoles userRole : userRoles) {
@@ -65,6 +104,9 @@ public final class SubmissionMapper {
         return null;
     }
 
+ */
+
+    /*
     private static List<BriefUserDto> mapReviewers(Submission entity) {
         List<SubmissionUserRoles> userRoles = entity.getSubmissionUserRoles();
         List<BriefUserDto> reviewers = new ArrayList<>();
@@ -74,4 +116,6 @@ public final class SubmissionMapper {
         }
         return reviewers;
     }
+
+     */
 }
