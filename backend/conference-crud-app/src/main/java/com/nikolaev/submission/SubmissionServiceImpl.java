@@ -133,7 +133,11 @@ public class SubmissionServiceImpl implements SubmissionService {
 
         // Fetch users from submission conference
         List<User> conferenceUserList = new ArrayList<>();
-        submission.getConference().getConferenceUserRoles().forEach(conferenceUserRoles -> conferenceUserList.add(conferenceUserRoles.getUser()));
+        submission.getConference().getUserRoleInConfList().stream()
+                .map(r -> r.getUser())
+                .distinct()
+                .forEach(r -> conferenceUserList.add(r));
+//        submission.getConference().getConferenceUserRoles().forEach(conferenceUserRoles -> conferenceUserList.add(conferenceUserRoles.getUser()));
 
         outer:
         for (User user : userList) {

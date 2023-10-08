@@ -2,6 +2,7 @@ package com.nikolaev.conference;
 
 
 import com.nikolaev.conference_user_roles.ConferenceUserRoles;
+import com.nikolaev.new_role_system.UserRoleInConf;
 import com.nikolaev.submission.Submission;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -45,4 +46,7 @@ public class Conference implements Serializable {
     // Conference - Submission
     @OneToMany(mappedBy = "conference")
     private List<Submission> submissions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "conference")
+    private List<UserRoleInConf> userRoleInConfList;
 }

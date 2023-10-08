@@ -25,8 +25,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "join roleList.roles roles where userRoles.conference.id = ?1 and roles.name = ?2 group by u")
     Page<User> findAllByConferenceIdAndRoleName(Long conferenceId, ConferenceRoleName roleName, Pageable pageable);
 
-    @Query("select u from User u join u.conferenceUserRoles userRoles where userRoles.conference.id = ?1")
+//    @Query("select u from User u join u.conferenceUserRoles userRoles where userRoles.conference.id = ?1")
+  //  Page<User> findAllByConferenceId(Long conferenceId, Pageable pageable);
+
+    @Query("select u from User u join u.userRoleInConfList urcl where urcl.conferenceId = ?1")
     Page<User> findAllByConferenceId(Long conferenceId, Pageable pageable);
+
 
     @Query("select u from User u join u.submissionUserRoles userRoles where userRoles.submission.id = ?1 and " +
             "userRoles.role.name = ?2")
@@ -37,10 +41,17 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //            "join roleList.roles roles where userRoles.conference.id = ?1 and not roles.name = ?2 and u.username like ?3% group by u")
 //    Page<User> findAllNonReviewersByConferenceId(Long id, ConferenceRoleName reviewer, String searchString, Pageable pageable);
 
+    /*
     @Query("select u from User u join u.conferenceUserRoles userRoles " +
             "join userRoles.roleList roleList " +
             "join roleList.roles roles where userRoles.conference.id = ?1 and roles.name = ?2 and u.username like ?3% group by u")
     Page<User> searchByConferenceIdAndRoleName(Long conferenceId, ConferenceRoleName roleName, String searchString, Pageable pageable);
+*/
+
+    @Query("select u from User u join u.userRoleInConfList urcl " +
+            "where urcl.conferenceId = ?1 and urcl.role = ?2 and u.username like ?3% group by u")
+    Page<User> searchByConferenceIdAndRoleName(Long conferenceId, Integer role, String searchString, Pageable pageable);
+
 
     @Override
     Page<User> findAll(Pageable pageable);

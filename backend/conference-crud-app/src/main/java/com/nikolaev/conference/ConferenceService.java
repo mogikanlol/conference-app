@@ -24,13 +24,13 @@ public interface ConferenceService {
 
     List<BriefSubmissionDto> getSubmissions(Long id, Pageable pageable);
 
-    void addUsers(Long id, List<Long> users);
+    // void addUsers(Long id, List<Long> users);
 
-    List<BriefUserRolesDto> getUsers(Long id);
+    // List<BriefUserRolesDto> getUsers(Long id);
 
-    void addReviewers(Long id, List<Long> reviewers);
+    // void addReviewers(Long id, List<Long> reviewers);
 
-    List<BriefUserDto> getReviewers(Long id);
+    // List<BriefUserDto> getReviewers(Long id);
 
 
     BriefUserRolesDto changeRoles(Long conferenceId, Long userId, Set<Integer> roles);

@@ -108,3 +108,17 @@ VALUES
 (1, 2),
 (3, 1),
 (4, 1);
+
+INSERT INTO user_role_in_conf (id, conference_id, role, user_id)
+VALUES
+-- 1 - creator
+(1, 1, 3, 1),
+-- 3 - first author
+(2, 1, 2, 3),
+-- 4 - second author
+(3, 1, 2, 4),
+-- 2 - participant
+(4, 1, 1, 2),
+
+(5,1, 1, 5);
+ALTER sequence user_role_in_conf_id_seq restart with 6;

@@ -2,6 +2,7 @@ package com.nikolaev.user;
 
 import com.nikolaev.conference_request.ConferenceRequest;
 import com.nikolaev.conference_user_roles.ConferenceUserRoles;
+import com.nikolaev.new_role_system.UserRoleInConf;
 import com.nikolaev.review.Review;
 import com.nikolaev.submission.Submission;
 import com.nikolaev.submission_user_roles.SubmissionUserRoles;
@@ -111,5 +112,7 @@ public class User {
         return user.getUsername().equals(username);
     }
 
+    @OneToMany(mappedBy = "user")
+    private List<UserRoleInConf> userRoleInConfList;
 }
 

@@ -60,16 +60,22 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserConferences(id));
     }
 
+    /*
     @RequestMapping(value = "/{id}/reviewer", method = RequestMethod.GET)
     public ResponseEntity isReviewer(@RequestParam(value = "conferenceId") Long conferenceId,
                                      @PathVariable("id") Long userId) {
         return ResponseEntity.ok(userService.isReviewer(userId, conferenceId));
     }
 
+     */
+
+    /*
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity getUser(@PathVariable("id") Long id) {
         return ResponseEntity.ok(userService.getUser(id));
     }
+
+     */
 
 
     @RequestMapping(value = "/{id}/submissions", method = RequestMethod.GET)

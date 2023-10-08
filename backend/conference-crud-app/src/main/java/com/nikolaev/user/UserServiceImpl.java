@@ -1,15 +1,13 @@
 package com.nikolaev.user;
 
 
-import com.nikolaev.conference.Conference;
 import com.nikolaev.conference.dto.BriefConferenceDto;
-import com.nikolaev.conference.dto.ConferenceMapper;
 import com.nikolaev.conference_request.dto.BriefConferenceRequestDto;
 import com.nikolaev.conference_request.dto.ConferenceRequestMapper;
-import com.nikolaev.conference_role.ConferenceRole;
 import com.nikolaev.conference_role.ConferenceRoleName;
-import com.nikolaev.conference_user_roles.ConferenceUserRoles;
 import com.nikolaev.conference_user_roles.ConferenceUserRolesRepository;
+import com.nikolaev.new_role_system.UserRoleInConf;
+import com.nikolaev.new_role_system.UserRoleInConfRepo;
 import com.nikolaev.review.dto.ReviewDto;
 import com.nikolaev.security.JwtTokenUtil;
 import com.nikolaev.submission.Submission;
@@ -33,9 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Slf4j
@@ -93,9 +89,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<BriefConferenceDto> getUserConferences(Long id) {
         User user = userRepository.getOne(id);
+        List<UserRoleInConf> test = user.getUserRoleInConfList();
+        return test.stream()
+                .map(UserRoleInConf::getConference)
+                .distinct()
+                .map(r -> {
+                    return new BriefConferenceDto(r.getId(), r.getTitle(), r.getExpirationDate());
+                }).toList();
+        /*
         List<Conference> conferenceList = new ArrayList<>();
         user.getConferenceUserRoles().forEach(conferenceUserRoles -> conferenceList.add(conferenceUserRoles.getConference()));
         return ConferenceMapper.toListBriefDto(conferenceList);
+         */
     }
 
     @Override
@@ -117,6 +122,7 @@ public class UserServiceImpl implements UserService {
 //        }
     }
 
+    /*
     @Override
     public boolean isReviewer(Long userId, Long conferenceId) {
         User user = userRepository.getOne(userId);
@@ -130,7 +136,9 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+     */
 
+    /*
     @Override
     public Set<ConferenceRole> getUser(Long id) {
         User user = userRepository.getOne(id);
@@ -140,6 +148,7 @@ public class UserServiceImpl implements UserService {
         }
         return list;
     }
+     */
 
 
     @Override
@@ -160,12 +169,15 @@ public class UserServiceImpl implements UserService {
         return ConferenceRequestMapper.toListBriefDto(userRepository.getOne(id).getRequests());
     }
 
+    private final UserRoleInConfRepo repo;
+
     @Override
     public Page<BriefUserRolesDto> findUsersByConferenceId(Long id, Integer roleNumber, Pageable pageable) {
-        if (roleNumber != null)
+        if (roleNumber != null) {
             return userRepository
                     .findAllByConferenceIdAndRoleName(id, ConferenceRoleName.fromInt(roleNumber), pageable)
                     .map(user -> UserMapper.toBriefRolesDto(user, id));
+        }
         else
             return userRepository
                     .findAllByConferenceId(id, pageable)
@@ -180,8 +192,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Page<BriefUserRolesDto> searchUsersByConferenceId(Long id, Integer roleNumber, String searchString, Pageable pageable) {
+        return userRepository.searchByConferenceIdAndRoleName(id, roleNumber + 1, searchString, pageable)
+                .map(user -> UserMapper.toBriefRolesDto(user, id));
+        /*
         return userRepository.searchByConferenceIdAndRoleName(id, ConferenceRoleName.fromInt(roleNumber), searchString, pageable)
                 .map(user -> UserMapper.toBriefRolesDto(user, id));
+
+         */
     }
 
     @Override
