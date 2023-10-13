@@ -11,7 +11,6 @@ import com.nikolaev.submission.dto.SubmissionDto;
 import com.nikolaev.user.UserService;
 import com.nikolaev.user.dto.BriefUserRolesDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -22,14 +21,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 
 @RestController
 @RequestMapping("/api/conferences")
 @RequiredArgsConstructor
-public class ConferenceController {
+public class ConferenceResource {
 
     private final ConferenceService conferenceService;
 
@@ -37,9 +35,8 @@ public class ConferenceController {
 
     private final UserService userService;
 
-
-    @RequestMapping(method = RequestMethod.GET)
-    public Page<BriefConferenceDto> getConferences(@RequestParam(value = "status", required = false) Integer statusNumber,
+    @GetMapping
+    public Page<BriefConferenceDto> getConferences(@RequestParam(name = "status", required = false) Integer statusNumber,
                                                    @PageableDefault Pageable pageable) {
         if (statusNumber == null)
             return conferenceService.getAll(pageable);
@@ -47,24 +44,24 @@ public class ConferenceController {
             return conferenceService.findAllByStatus(statusNumber, pageable);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @GetMapping("{id}")
     public ConferenceDto getConference(@PathVariable("id") Long id) throws ConferenceNotFoundException {
         return conferenceService.getConference(id);
     }
 
-    @RequestMapping(value = "{id}/submissions", method = RequestMethod.GET)
+    @GetMapping("{id}/submissions")
     public Page<BriefSubmissionDto> getSubmissions(@PathVariable("id") Long id, @PageableDefault Pageable pageable,
-                                                   @RequestParam(value = "status", required = false) Integer statusNumber) {
+                                                   @RequestParam(name = "status", required = false) Integer statusNumber) {
         if (statusNumber == null)
             return submissionService.findSubmissionsByConferenceId(id, pageable);
         else
             return submissionService.findSubmissionsByConferenceIdAndStatus(id, statusNumber, pageable);
     }
 
-    @RequestMapping(value = "{conferenceId}/submissions/users/{userId}", method = RequestMethod.GET)
+    @GetMapping("{conferenceId}/submissions/users/{userId}")
     public Page<BriefSubmissionDto> getUserSubmissions(@PathVariable("conferenceId") Long conferenceId,
                                                        @PathVariable("userId") Long userId,
-                                                       @RequestParam(value = "status", required = false) Integer statusNumber,
+                                                       @RequestParam(name = "status", required = false) Integer statusNumber,
                                                        @PageableDefault Pageable pageable) {
         if (statusNumber == null)
             return submissionService.getUserSubmissionsByConferenceId(conferenceId, userId, pageable);
@@ -72,10 +69,10 @@ public class ConferenceController {
             return submissionService.getUserSubmissionsByConferenceIdAndStatus(conferenceId, userId, statusNumber, pageable);
     }
 
-    @RequestMapping(value = "{conferenceId}/submissions/reviewers/{reviewerId}", method = RequestMethod.GET)
+    @GetMapping("{conferenceId}/submissions/reviewers/{reviewerId}")
     public Page<BriefSubmissionDto> getReviewerSubmissions(@PathVariable("conferenceId") Long conferenceId,
                                                            @PathVariable("reviewerId") Long reviewerId,
-                                                           @RequestParam(value = "status", required = false) Integer statusNumber,
+                                                           @RequestParam(name = "status", required = false) Integer statusNumber,
                                                            @PageableDefault Pageable pageable) {
         if (statusNumber == null)
             return submissionService.getReviewerSubmissionsByConferenceId(conferenceId, reviewerId, pageable);
@@ -83,10 +80,10 @@ public class ConferenceController {
             return submissionService.getReviewerSubmissionsByConferenceIdAndStatus(conferenceId, reviewerId, statusNumber, pageable);
     }
 
-    @RequestMapping(value = "{id}/users", method = RequestMethod.GET)
+    @GetMapping("{id}/users")
     public Page<BriefUserRolesDto> getUsers(@PathVariable("id") Long id,
-                                            @RequestParam(value = "role", required = false) Integer roleNumber,
-                                            @RequestParam(value = "search", required = false) String searchString,
+                                            @RequestParam(name = "role", required = false) Integer roleNumber,
+                                            @RequestParam(name = "search", required = false) String searchString,
                                             @PageableDefault Pageable pageable) {
         if (searchString == null) {
             return userService.findUsersByConferenceId(id, roleNumber, pageable);
@@ -104,7 +101,7 @@ public class ConferenceController {
 
      */
 
-    @RequestMapping(value = "{id}/reviewers", method = RequestMethod.GET)
+    @GetMapping("{id}/reviewers")
     public Page<BriefUserRolesDto> getReviewers(@PathVariable("id") Long id,
                                                 @PageableDefault Pageable pageable) {
         return userService.findUsersByConferenceId(id, ConferenceRoleName.REVIEWER.getValue(), pageable);
@@ -117,8 +114,7 @@ public class ConferenceController {
      * @param file       document file
      * @param id         conference id
      */
-    @RequestMapping(value = "{id}/submissions", method = RequestMethod.POST,
-            consumes = {"multipart/form-data"})
+    @PostMapping(path = "{id}/submissions", consumes = {"multipart/form-data"})
     public void submissionUpload(@RequestPart("submission") SubmissionDto submission,
                                  @RequestPart("file") MultipartFile file,
                                  @PathVariable("id") Long id) throws IOException {
@@ -126,25 +122,25 @@ public class ConferenceController {
 
     }
 
-    @RequestMapping(value = "{conferenceId}/users/{userId}", method = RequestMethod.PUT)
+    @PutMapping("{conferenceId}/users/{userId}")
     public BriefUserRolesDto changeRoles(@PathVariable("conferenceId") Long conferenceId,
-                                      @PathVariable("userId") Long userId,
-                                      @RequestBody Set<Integer> roles) {
+                                         @PathVariable("userId") Long userId,
+                                         @RequestBody Set<Integer> roles) {
         return conferenceService.changeRoles(conferenceId, userId, roles);
     }
 
-    @RequestMapping(value = "{conferenceId}/users/{userId}", method = RequestMethod.GET)
+    @GetMapping("{conferenceId}/users/{userId}")
     public BriefUserRolesDto getUserRoles(@PathVariable("conferenceId") Long conferenceId,
-                                       @PathVariable("userId") Long userId) {
+                                          @PathVariable("userId") Long userId) {
         return conferenceService.getUserRoles(conferenceId, userId);
     }
 
-    @RequestMapping(value = "{conferenceId}/invite", method = RequestMethod.POST)
+    @PostMapping("{conferenceId}/invite")
     public void inviteUser(@PathVariable("conferenceId") Long conferenceId, @RequestBody String username) {
         conferenceService.inviteUser(conferenceId, username);
     }
 
-    @RequestMapping(value = "{conferenceId}/statistic", method = RequestMethod.GET)
+    @GetMapping("{conferenceId}/statistic")
     public ConferenceStatistic getStatistic(@PathVariable("conferenceId") Long conferenceId) {
         return conferenceService.getConferenceStatistic(conferenceId);
     }
