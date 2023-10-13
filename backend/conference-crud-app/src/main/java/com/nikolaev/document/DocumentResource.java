@@ -1,5 +1,6 @@
 package com.nikolaev.document;
 
+import com.nikolaev.document.dto.DocumentDto;
 import com.nikolaev.review.ReviewService;
 import com.nikolaev.review.dto.ReviewDto;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,9 +16,9 @@ import java.io.InputStream;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping("/api/documents")
 @RequiredArgsConstructor
-public class DocumentController {
+public class DocumentResource {
 
     private final DocumentService documentService;
     private final ReviewService reviewService;
@@ -33,18 +34,17 @@ public class DocumentController {
 //
 //    }
 
-    @RequestMapping(value = "/documents/{documentId}", method = RequestMethod.GET)
-    public ResponseEntity getDocument(@PathVariable("documentId") Long documentId) {
-        return ResponseEntity.ok(documentService.getDocument(documentId));
+    @GetMapping("/{documentId}")
+    public DocumentDto getDocument(@PathVariable("documentId") Long documentId) {
+        return documentService.getDocument(documentId);
     }
 
-    @RequestMapping(value = "/documents/{documentId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/{documentId}")
     public void deleteDocument(@PathVariable("documentId") Long documentId) {
         documentService.deleteDocument(documentId);
     }
 
-    @RequestMapping(value = "/documents/{documentId}/download",
-            method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+    @GetMapping(path = "/{documentId}/download", produces = "text/plain;charset=UTF-8")
     public void downloadDocument(@PathVariable("documentId") Long documentId, HttpServletResponse response) throws IOException {
         Document document = documentService.downloadDocument(documentId);
 //        String mimeType = URLConnection.guessContentTypeFromName(document.getFilename());
@@ -63,7 +63,7 @@ public class DocumentController {
 //        return new ResponseEntity<>(document.getData(), headers, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/documents/{documentId}/reviews", method = RequestMethod.POST)
+    @PostMapping("/{documentId}/reviews")
     public void createReview(@PathVariable("documentId") Long documentId,
                              @RequestBody ReviewDto reviewDto) {
         this.reviewService.createReview(documentId, reviewDto);
