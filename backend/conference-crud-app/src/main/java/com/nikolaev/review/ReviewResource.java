@@ -8,26 +8,26 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/reviews")
 @RequiredArgsConstructor
-public class ReviewController {
+public class ReviewResource {
 
     private final ReviewService reviewService;
 
-    @RequestMapping(value = "{reviewId}", method = RequestMethod.GET)
+    @GetMapping("{reviewId}")
     public ReviewDto getReview(@PathVariable("reviewId") Long reviewId) {
         return this.reviewService.getReview(reviewId);
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @PutMapping
     public ReviewDto updateReview(@RequestBody ReviewDto reviewDto) {
         return this.reviewService.update(reviewDto);
     }
 
-    @RequestMapping(value = "{reviewId}/submit", method = RequestMethod.POST)
+    @PostMapping("{reviewId}/submit")
     public ReviewDto submitReview(@PathVariable("reviewId") Long reviewId) {
         return this.reviewService.submitReview(reviewId);
     }
 
-    @RequestMapping(value = "{reviewId}", method = RequestMethod.DELETE)
+    @DeleteMapping("{reviewId}")
     public void deleteReview(@PathVariable("reviewId") Long reviewId) {
         this.reviewService.deleteReview(reviewId);
     }
