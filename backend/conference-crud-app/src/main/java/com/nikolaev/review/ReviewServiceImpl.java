@@ -59,7 +59,11 @@ public class ReviewServiceImpl implements ReviewService {
         ReviewDto reviewDto = ReviewMapper.toDto(this.reviewRepository.save(review));
 
         Document document = review.getDocument();
-        int reviewerCount = (int) document.getSubmission().getSubmissionUserRoles().stream().filter(submissionUserRoles -> submissionUserRoles.getRole().getName().equals(SubmissionRoleName.REVIEWER)).count();
+        // int reviewerCount = (int) document.getSubmission().getSubmissionUserRoles().stream().filter(submissionUserRoles -> submissionUserRoles.getRole().getName().equals(SubmissionRoleName.REVIEWER)).count();
+        long reviewerCount = document.getSubmission().getTest().stream()
+                .filter(r -> r.getRole().equals(SubmissionRoleName.REVIEWER))
+                .count();
+
         if (document.getReviews().stream().allMatch(Review::isSubmitted) && document.getReviews().size() == reviewerCount) {
             Optional<Review> min = document.getReviews().stream().min((Comparator.comparingInt(o -> o.getStatus().getName().getValue())));
             if (min.isPresent() && min.get().getStatus().getName().getValue() <= ReviewStatusName.PROBABLY_ACCEPT.getValue()) {
