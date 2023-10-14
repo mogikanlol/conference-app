@@ -1,8 +1,10 @@
 package com.nikolaev.user;
 
+import com.nikolaev.conference.dto.BriefConferenceDto;
 import com.nikolaev.conference_request.ConferenceRequestService;
 import com.nikolaev.conference_request.dto.BriefConferenceRequestDto;
 import com.nikolaev.security.JwtTokenUtil;
+import com.nikolaev.submission.dto.BriefSubmissionDto;
 import com.nikolaev.user.dto.BriefUserDto;
 import com.nikolaev.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +16,13 @@ import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
-@RequestMapping(value = "api/users")
+@RequestMapping("api/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserResource {
 
     private final JwtTokenUtil jwtTokenUtil;
     private final UserDetailsService userDetailsService;
@@ -55,9 +59,9 @@ public class UserController {
 //                                                 String reviewable) {
 //        return ResponseEntity.ok(userService.getUserConferences(id, Boolean.valueOf(reviewable)));
 //    }
-    @RequestMapping(value = "/{id}/conferences", method = RequestMethod.GET)
-    public ResponseEntity getConferences(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(userService.getUserConferences(id));
+    @GetMapping("/{id}/conferences")
+    public List<BriefConferenceDto> getConferences(@PathVariable("id") Long id) {
+        return userService.getUserConferences(id);
     }
 
     /*
@@ -78,20 +82,20 @@ public class UserController {
      */
 
 
-    @RequestMapping(value = "/{id}/submissions", method = RequestMethod.GET)
-    public ResponseEntity getSubmissions(@PathVariable("id") Long userId) {
-        return ResponseEntity.ok(userService.getSubmissions(userId));
+    @GetMapping("/{id}/submissions")
+    public List<BriefSubmissionDto> getSubmissions(@PathVariable("id") Long userId) {
+        return userService.getSubmissions(userId);
     }
 
-    @RequestMapping(value = "/{id}/conference-requests", method = RequestMethod.GET)
+    @GetMapping("/{id}/conference-requests")
     public Page<BriefConferenceRequestDto> getConferenceRequests(@PathVariable("id") Long id,
                                                                  @PageableDefault Pageable pageable,
-                                                                 @RequestParam(value = "status", required = false) Integer statusNumber) {
+                                                                 @RequestParam(name = "status", required = false) Integer statusNumber) {
         return conferenceRequestService.findRequestsByUserId(id, pageable, statusNumber);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public Page<BriefUserDto> getUsers(@RequestParam(value = "search", required = false) String searchString,
+    @GetMapping
+    public Page<BriefUserDto> getUsers(@RequestParam(name = "search", required = false) String searchString,
                                        @PageableDefault Pageable pageable) {
         if (searchString == null) {
             return userService.getUsers(pageable);
