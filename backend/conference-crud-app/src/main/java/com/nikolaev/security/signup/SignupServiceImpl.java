@@ -60,6 +60,8 @@ public class SignupServiceImpl implements SignupService {
     }
 
     private boolean validate(User user) throws SignupException {
+        return true;
+        /*
         if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new SignupException("Something went wrong",
                     new HashMap<String, List<String>>() {
@@ -87,5 +89,7 @@ public class SignupServiceImpl implements SignupService {
 
 
         throw new SignupException("Something went wrong", errors);
+
+         */
     }
 }
