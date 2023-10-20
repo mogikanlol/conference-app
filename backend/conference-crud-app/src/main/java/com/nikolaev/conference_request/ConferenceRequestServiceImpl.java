@@ -25,8 +25,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ConferenceRequestServiceImpl implements ConferenceRequestService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private final ConferenceRequestRepository requestRepository;
     private final UserRepository userRepository;
     private final ConferenceService conferenceService;
@@ -35,9 +33,10 @@ public class ConferenceRequestServiceImpl implements ConferenceRequestService {
 
     @Override
     public void createRequest(ConferenceRequestDto requestDTO) {
-        ConferenceRequest request = new ConferenceRequest();
         User user = userRepository.findByUsername(requestDTO.getOrganizer().getUsername());
         ConferenceRequestStatus status = conferenceRequestStatusRepository.findByName(ConferenceRequestStatusName.PENDING);
+
+        ConferenceRequest request = new ConferenceRequest();
         request.setTitle(requestDTO.getTitle());
         request.setAcronym(requestDTO.getAcronym());
         request.setWebPage(requestDTO.getWebPage());
@@ -51,9 +50,9 @@ public class ConferenceRequestServiceImpl implements ConferenceRequestService {
 
     @Override
     public Page<BriefConferenceRequestDto> getAll(Integer statusNumber, Pageable pageable) {
-        if (statusNumber == null)
+        if (statusNumber == null) {
             return requestRepository.findAll(pageable).map(ConferenceRequestMapper::toBriefDto);
-        else {
+        } else {
             ConferenceRequestStatus status
                     = conferenceRequestStatusRepository.findByName(ConferenceRequestStatusName.fromInt(statusNumber));
             return requestRepository.findAllByStatus(status, pageable).map(ConferenceRequestMapper::toBriefDto);
@@ -62,11 +61,9 @@ public class ConferenceRequestServiceImpl implements ConferenceRequestService {
 
     @Override
     public void update(ConferenceRequestDto requestDto) {
-        ConferenceRequest request = requestRepository.getOne(requestDto.getId());
         User organizer = userRepository.findByUsername(requestDto.getOrganizer().getUsername());
-        ConferenceRequestStatus status =
-                conferenceRequestStatusRepository
-                        .findByName(ConferenceRequestStatusName.PENDING);
+        ConferenceRequestStatus status = conferenceRequestStatusRepository.findByName(ConferenceRequestStatusName.PENDING);
+        ConferenceRequest request = requestRepository.getOne(requestDto.getId());
         request.setStatus(status);
         request.setTitle(requestDto.getTitle());
         request.setAcronym(requestDto.getAcronym());
@@ -91,18 +88,23 @@ public class ConferenceRequestServiceImpl implements ConferenceRequestService {
     @Override
     public ConferenceRequestDto createComment(Long requestId, ConferenceRequestCommentDto commentDto) {
         ConferenceRequest request = requestRepository.getOne(requestId);
+        ConferenceRequestStatus requestStatus = conferenceRequestStatusRepository.findByName(ConferenceRequestStatusName.fromInt(commentDto.getStatus()));
+
         ConferenceRequestComment comment = new ConferenceRequestComment();
         comment.setRequest(request);
         comment.setDate(commentDto.getDate());
         comment.setContent(commentDto.getContent());
-        comment.setStatus(conferenceRequestStatusRepository
-                .findByName(ConferenceRequestStatusName.fromInt(commentDto.getStatus())));
-        commentRepository.save(comment);
-        request.setStatus(comment.getStatus());
-        if (comment.getStatus().getName().equals(ConferenceRequestStatusName.ACCEPTED))
-            conferenceService.createConference(request);
+        comment.setStatus(requestStatus);
 
-        return ConferenceRequestMapper.toDto(requestRepository.save(request));
+        commentRepository.save(comment);
+
+        request.setStatus(comment.getStatus());
+        if (comment.getStatus().getName().equals(ConferenceRequestStatusName.ACCEPTED)) {
+            conferenceService.createConference(request);
+        }
+        ConferenceRequest entity = requestRepository.save(request);
+
+        return ConferenceRequestMapper.toDto(entity);
     }
 
     @Override

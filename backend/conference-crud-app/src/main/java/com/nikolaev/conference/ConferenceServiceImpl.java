@@ -31,44 +31,35 @@ import java.util.stream.Collectors;
 public class ConferenceServiceImpl implements ConferenceService {
 
     private final ConferenceRepository conferenceRepository;
-    private final ConferenceRoleListHolderRepository roleListHolderRepository;
     private final ConferenceRoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final ConferenceUserRolesRepository conferenceUserRolesRepository;
+    private final UserRoleInConfRepo repo;
 
     @Override
     public Page<BriefConferenceDto> getAll(Pageable pageable) {
-        return conferenceRepository.findAll(pageable).map(ConferenceMapper::toBriefDto);
+        return conferenceRepository.findAll(pageable)
+                .map(ConferenceMapper::toBriefDto);
     }
-
 
     @Override
     public ConferenceDto getConference(Long id) throws ConferenceNotFoundException {
-        Conference conference = conferenceRepository.getOne(id);
-        if (conference == null)
-            throw new ConferenceNotFoundException("Conference not found");
-        else
-            return ConferenceMapper.toDto(conference);
+        return conferenceRepository.findById(id)
+                .map(ConferenceMapper::toDto)
+                .orElseThrow(() -> new ConferenceNotFoundException("Conference not found"));
     }
 
     @Override
-    public void createConference(ConferenceRequestDto request) {
-
-    }
-
     public void createConference(ConferenceRequest request) {
-        Conference conference = new Conference();
         User user = userRepository.findByUsername(request.getOrganizer().getUsername());
+        ConferenceRole creator = roleRepository.findByName(ConferenceRoleName.CREATOR);
+
+        Conference conference = new Conference();
         conference.setTitle(request.getTitle());
         conference.setAcronym(request.getAcronym());
         conference.setWebPage(request.getWebPage());
         conference.setCity(request.getCity());
         conference.setCountry(request.getCountry());
         conference.setExpirationDate(request.getExpirationDate());
-
-
-
-        ConferenceRole creator = roleRepository.findByName(ConferenceRoleName.CREATOR);
 
         conferenceRepository.save(conference);
 
@@ -81,24 +72,6 @@ public class ConferenceServiceImpl implements ConferenceService {
 
         repo.save(userRoleInConf);
     }
-
-    /*
-    @Override
-    public List<BriefUserDto> getReviewers(Long id) {
-        Conference conference = conferenceRepository.getOne(id);
-        List<User> userList = new ArrayList<>();
-        for (ConferenceUserRoles conferenceUserRoles : conference.getConferenceUserRoles()) {
-            List<ConferenceRoleName> roles =
-                    conferenceUserRoles.getRoleList().getRoles().stream().map(ConferenceRole::getName).collect(Collectors.toList());
-            if (roles.contains(ConferenceRoleName.REVIEWER))
-                userList.add(conferenceUserRoles.getUser());
-        }
-        return userList.stream().map(UserMapper::toBriefDto).collect(Collectors.toList());
-    }
-
-     */
-
-    private final UserRoleInConfRepo repo;
 
     @Override
     public BriefUserRolesDto changeRoles(Long conferenceId, Long userId, Set<Integer> roles1) {
@@ -151,20 +124,6 @@ public class ConferenceServiceImpl implements ConferenceService {
                 asd
         );
         return dto;
-
-        /*
-        ConferenceUserRoles userRoles = conferenceUserRolesRepository.findByConferenceIdAndUserId(conferenceId, userId);
-        ConferenceRoleListHolder roleList = userRoles.getRoleList();
-
-
-        Set<ConferenceRole> newRoleList =
-                roles.stream().map(ConferenceRoleName::fromInt).map(roleRepository::findByName).collect(Collectors.toSet());
-        roleList.setRoles(newRoleList);
-        roleListHolderRepository.save(roleList);
-
-        return UserMapper.toBriefRolesDto(userRepository.getOne(userId), conferenceId);
-
-         */
     }
 
     @Override
@@ -180,17 +139,6 @@ public class ConferenceServiceImpl implements ConferenceService {
                 list.stream().map(r -> r.getRole() - 1).toList()
         );
         return dto;
-
-/*
-        Conference conference = conferenceRepository.getOne(conferenceId);
-        for (ConferenceUserRoles userRoles : conference.getConferenceUserRoles()) {
-            if (userRoles.getUser().getId().equals(userId)) {
-                return UserMapper.toBriefRolesDto(userRoles.getUser(), conferenceId);
-            }
-        }
-        return null;
-
- */
     }
 
     @Override
@@ -209,24 +157,6 @@ public class ConferenceServiceImpl implements ConferenceService {
             userRoleInConf.setRole(ConferenceRoleName.SUBMITTER.getValue() + 1);
 
             repo.save(userRoleInConf);
-            /*
-
-            ConferenceRoleListHolder listHolder = new ConferenceRoleListHolder();
-            listHolder.setRoles(new HashSet<ConferenceRole>() {{
-                add(roleRepository.findByName(ConferenceRoleName.SUBMITTER));
-            }});
-            roleListHolderRepository.save(listHolder);
-
-            Conference conference = conferenceRepository.getOne(conferenceId);
-            ConferenceUserRoles conferenceUserRoles = new ConferenceUserRoles();
-            conferenceUserRoles.setConference(conference);
-            conferenceUserRoles.setUser(user);
-            conferenceUserRoles.setRoleList(listHolder);
-            conferenceUserRolesRepository.save(conferenceUserRoles);
-
-             */
-
-
         }
     }
 
@@ -244,72 +174,4 @@ public class ConferenceServiceImpl implements ConferenceService {
     public ConferenceStatistic getConferenceStatistic(Long conferenceId) {
         return new ConferenceStatistic(conferenceRepository.getOne(conferenceId));
     }
-
-    /*
-    @Override
-    public void addUsers(Long id, List<Long> users) {
-        Conference conference = conferenceRepository.getOne(id);
-        Set<User> userList = users.stream().map(userRepository::getOne).collect(Collectors.toSet());
-
-        for (User user : userList) {
-            ConferenceRoleListHolder listHolder = new ConferenceRoleListHolder();
-            listHolder.setRoles(new HashSet<ConferenceRole>() {{
-//                add(participant);
-            }});
-
-            ConferenceUserRoles userRoles = new ConferenceUserRoles();
-            userRoles.setUser(user);
-            userRoles.setConference(conference);
-            userRoles.setRoleList(listHolder);
-
-            roleListHolderRepository.save(listHolder);
-            conferenceUserRolesRepository.save(userRoles);
-        }
-
-    }
-
-     */
-
-    /*
-    @Override
-    public List<BriefUserRolesDto> getUsers(Long id) {
-        Conference conference = conferenceRepository.getOne(id);
-        List<User> userList = new ArrayList<>();
-        conference.getConferenceUserRoles().forEach(userRole -> userList.add(userRole.getUser()));
-        return userList.stream().map(user -> UserMapper.toBriefRolesDto(user, id)).collect(Collectors.toList());
-    }
-
-     */
-
-    /*
-    @Override
-    public void addReviewers(Long id, List<Long> reviewers) {
-        List<User> userList = reviewers.stream().map(userRepository::getOne).collect(Collectors.toList());
-
-        ConferenceRole reviewerRole = roleRepository.findByName(ConferenceRoleName.REVIEWER);
-//        ConferenceRole participantRole = roleRepository.findByName(ConferenceRoleName.PARTICIPANT);
-
-        for (User user : userList) {
-            for (ConferenceUserRoles userRoles : user.getConferenceUserRoles()) {
-                ConferenceRoleListHolder roleList = userRoles.getRoleList();
-                Set<ConferenceRole> roles = roleList.getRoles();
-                if (roles.contains(reviewerRole))
-                    break;
-//                roles.remove(participantRole);
-                roles.add(reviewerRole);
-                roleList.setRoles(roles);
-                roleListHolderRepository.save(roleList);
-            }
-        }
-
-    }
-
-     */
-
-    @Override
-    public List<BriefSubmissionDto> getSubmissions(Long id, Pageable pageable) {
-        return SubmissionMapper.toListBriefDto(conferenceRepository.getOne(id).getSubmissions());
-    }
-
-
 }

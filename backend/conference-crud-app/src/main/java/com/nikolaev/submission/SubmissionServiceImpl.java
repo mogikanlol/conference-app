@@ -45,7 +45,6 @@ public class SubmissionServiceImpl implements SubmissionService {
     private final ConferenceRepository conferenceRepository;
     private final DocumentRepository documentRepository;
     private final SubmissionStatusRepository submissionStatusRepository;
-    private final SubmissionUserRolesRepository submissionUserRolesRepository;
     private final SubmissionRoleRepository roleRepository;
 
     private final UserRoleInSubmRepo repo;

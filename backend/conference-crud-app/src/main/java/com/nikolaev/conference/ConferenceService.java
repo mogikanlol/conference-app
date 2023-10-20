@@ -19,19 +19,7 @@ public interface ConferenceService {
 
     ConferenceDto getConference(Long id) throws ConferenceNotFoundException;
 
-    void createConference(ConferenceRequestDto request);
     void createConference(ConferenceRequest request);
-
-    List<BriefSubmissionDto> getSubmissions(Long id, Pageable pageable);
-
-    // void addUsers(Long id, List<Long> users);
-
-    // List<BriefUserRolesDto> getUsers(Long id);
-
-    // void addReviewers(Long id, List<Long> reviewers);
-
-    // List<BriefUserDto> getReviewers(Long id);
-
 
     BriefUserRolesDto changeRoles(Long conferenceId, Long userId, Set<Integer> roles);
 
