@@ -18,7 +18,7 @@ import {ConferenceStatistic} from '../../shared/model/conference-statistic/confe
 @Injectable()
 export class ConferenceService {
 
-  url = 'http://localhost:8081/api/conferences';
+  url = '/backend/api/conferences';
   private userId?: number;
 
 
@@ -41,24 +41,24 @@ export class ConferenceService {
   }
 
   getReviewers(conferenceId: number, page: number = 0, roleNumber?: number): Observable<Page<BriefUserRoles>> {
-    return this.http.get<Page<BriefUserRoles>>('http://localhost:8081/api/conferences/' + conferenceId + '/reviewers?page=' + page);
+    return this.http.get<Page<BriefUserRoles>>('/backend/api/conferences/' + conferenceId + '/reviewers?page=' + page);
   }
 
   getConference(id: number | string): Observable<Conference> {
-    return this.http.get<Conference>('http://localhost:8081/api/conferences/' + id);
+    return this.http.get<Conference>('/backend/api/conferences/' + id);
   }
 
   addReviewers(conferenceId: number, submissionId: number, reviewers: Array<string>) {
     console.log(reviewers);
-    return this.http.post('http://localhost:8081/api/submissions/' + submissionId + '/reviewers', reviewers);
+    return this.http.post('/backend/api/submissions/' + submissionId + '/reviewers', reviewers);
   }
 
   addReviewersToConference(conferenceId: number, reviewers: Array<string>) {
-    return this.http.post('http://localhost:8081/api/conferences/' + conferenceId + '/reviewers', reviewers);
+    return this.http.post('/backend/api/conferences/' + conferenceId + '/reviewers', reviewers);
   }
 
   addUsers(conferenceId: number, users: Array<string>) {
-    return this.http.post('http://localhost:8081/api/conferences/' + conferenceId + '/users', users);
+    return this.http.post('/backend/api/conferences/' + conferenceId + '/users', users);
   }
 
   getUsers(conferenceId: number, page: number = 0, roleNumber?: number, searchString?: string): Observable<Page<BriefUserRoles>> {
@@ -68,9 +68,9 @@ export class ConferenceService {
     }
     if (roleNumber !== undefined && searchString !== undefined) {
       params = new HttpParams().set('search', searchString).set('role', roleNumber.toString());
-      return this.http.get<Page<BriefUserRoles>>('http://localhost:8081/api/conferences/' + conferenceId + '/users?page=' + page, {params: params});
+      return this.http.get<Page<BriefUserRoles>>('/backend/api/conferences/' + conferenceId + '/users?page=' + page, {params: params});
     }
-    return this.http.get<Page<BriefUserRoles>>('http://localhost:8081/api/conferences/' + conferenceId + '/users?page=' + page, {params: params});
+    return this.http.get<Page<BriefUserRoles>>('/backend/api/conferences/' + conferenceId + '/users?page=' + page, {params: params});
   }
 
   createSubmission(value: Submission, conferenceId: number, file: File) {
@@ -78,7 +78,7 @@ export class ConferenceService {
     formdata.append('file', file);
     console.log(value);
     formdata.append('submission', new Blob([JSON.stringify(value)], {type: 'application/json'}));
-    return this.http.post('http://localhost:8081/api/conferences/' + conferenceId + '/submissions', formdata);
+    return this.http.post('/backend/api/conferences/' + conferenceId + '/submissions', formdata);
   }
 
 
@@ -87,11 +87,11 @@ export class ConferenceService {
     if (status !== undefined) {
       params = new HttpParams().set('status', status.toString());
     }
-    return this.http.get<Page<BriefSubmission>>('http://localhost:8081/api/conferences/' + conferenceId + '/submissions?page=' + page, {params: params});
+    return this.http.get<Page<BriefSubmission>>('/backend/api/conferences/' + conferenceId + '/submissions?page=' + page, {params: params});
   }
 
   addRolesToUser(conferenceId: number, userId: number, roles: Set<number>) {
-    return this.http.put<BriefUserRoles>('http://localhost:8081/api/conferences/' + conferenceId + '/users/' + userId, Array.from(roles));
+    return this.http.put<BriefUserRoles>('/backend/api/conferences/' + conferenceId + '/users/' + userId, Array.from(roles));
   }
 
   getUserSubmissions(conferenceId: number, status: number, page: number = 0): Observable<Page<BriefSubmission>> {
@@ -100,7 +100,7 @@ export class ConferenceService {
       params = new HttpParams().set('status', status.toString());
     }
     return this.http.get<Page<BriefSubmission>>
-    ('http://localhost:8081/api/conferences/'
+    ('/backend/api/conferences/'
       + conferenceId + '/submissions/users/'
       + this.tokenService.getUserId() + '?page=' + page, {params: params});
   }
@@ -111,20 +111,20 @@ export class ConferenceService {
       params = new HttpParams().set('status', status.toString());
     }
     return this.http.get<Page<BriefSubmission>>
-    ('http://localhost:8081/api/conferences/'
+    ('/backend/api/conferences/'
       + conferenceId + '/submissions/reviewers/'
       + this.tokenService.getUserId() + '?page=' + page, {params: params});
   }
 
   getUserRoles(conferenceId: number): Observable<BriefUserRoles> {
-    return this.http.get<BriefUserRoles>('http://localhost:8081/api/conferences/' + conferenceId + '/users/' + this.tokenService.getUserId());
+    return this.http.get<BriefUserRoles>('/backend/api/conferences/' + conferenceId + '/users/' + this.tokenService.getUserId());
   }
 
   inviteUser(conferenceId: number, username: string) {
-    return this.http.post('http://localhost:8081/api/conferences/' + conferenceId + '/invite', username);
+    return this.http.post('/backend/api/conferences/' + conferenceId + '/invite', username);
   }
 
   getStatistic(conferenceId: number): Observable<ConferenceStatistic> {
-    return this.http.get<ConferenceStatistic>('http://localhost:8081/api/conferences/' + conferenceId + '/statistic');
+    return this.http.get<ConferenceStatistic>('/backend/api/conferences/' + conferenceId + '/statistic');
   }
 }

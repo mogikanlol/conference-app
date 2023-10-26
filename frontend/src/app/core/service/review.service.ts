@@ -9,23 +9,23 @@ export class ReviewService {
   }
 
   getReview(reviewId: number): Observable<Review> {
-    return this.http.get<Review>('http://localhost:8081/api/reviews/' + reviewId);
+    return this.http.get<Review>('/backend/api/reviews/' + reviewId);
   }
 
   createReview(documentId: number, review: Review) {
-    return this.http.post('http://localhost:8081/api/documents/' + documentId + '/reviews', review);
+    return this.http.post('/backend/api/documents/' + documentId + '/reviews', review);
   }
 
 
   updateReview(review: Review): Observable<Review> {
-    return this.http.put<Review>('http://localhost:8081/api/reviews', review);
+    return this.http.put<Review>('/backend/api/reviews', review);
   }
 
   submitReview(review: Review): Observable<Review> {
-    return this.http.post<Review>('http://localhost:8081/api/reviews/' + review.id + '/submit', review);
+    return this.http.post<Review>('/backend/api/reviews/' + review.id + '/submit', review);
   }
 
   deleteReview(reviewId: number) {
-    return this.http.delete('http://localhost:8081/api/reviews/' + reviewId);
+    return this.http.delete('/backend/api/reviews/' + reviewId);
   }
 }

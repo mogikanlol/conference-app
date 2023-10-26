@@ -6,7 +6,7 @@ import { map, filter, switchMap } from 'rxjs/operators';
 @Injectable()
 export class AuthenticationService {
 
-  url = 'http://localhost:8081/api/auth/';
+  url = '/backend/api/auth/';
 
   constructor(private http: HttpClient) {
   }

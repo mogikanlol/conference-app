@@ -17,7 +17,7 @@ import { map, filter, switchMap } from 'rxjs/operators';
 @Injectable()
 export class UserService {
 
-  private url = 'http://localhost:8081/api/users/';
+  private url = '/backend/api/users/';
   private userId?: number;
 
   private reviewer: Map<number, boolean>;

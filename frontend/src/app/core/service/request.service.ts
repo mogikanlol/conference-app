@@ -14,7 +14,7 @@ export class RequestService {
 
   createRequest(request: ConferenceRequest) {
     console.log(request);
-    return this.http.post('http://localhost:8081/api/requests', request);
+    return this.http.post('/backend/api/requests', request);
   }
 
   getAll(page: number = 0, statusNumber?: number): Observable<Page<BriefConferenceRequest>> {
@@ -22,18 +22,18 @@ export class RequestService {
     if (statusNumber !== undefined) {
       params = new HttpParams().set('status', statusNumber.toString());
     }
-    return this.http.get<Page<BriefConferenceRequest>>('http://localhost:8081/api/requests?page=' + page, {params: params});
+    return this.http.get<Page<BriefConferenceRequest>>('/backend/api/requests?page=' + page, {params: params});
   }
 
   getRequest(id: number | string): Observable<ConferenceRequest> {
-    return this.http.get<ConferenceRequest>('http://localhost:8081/api/requests/' + id);
+    return this.http.get<ConferenceRequest>('/backend/api/requests/' + id);
   }
 
   update(request: ConferenceRequest) {
-    return this.http.put('http://localhost:8081/api/requests', request);
+    return this.http.put('/backend/api/requests', request);
   }
 
   createComment(requestId: number, comment: ConferenceRequestComment): Observable<ConferenceRequest> {
-    return this.http.post<ConferenceRequest>('http://localhost:8081/api/requests/' + requestId + '/comments', comment);
+    return this.http.post<ConferenceRequest>('/backend/api/requests/' + requestId + '/comments', comment);
   }
 }

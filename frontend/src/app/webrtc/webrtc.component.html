@@ -1,0 +1,31 @@
+<div>
+
+    This is Webrtc page!
+    
+    <h1>A Demo for messaging in WebRTC</h1>
+
+    <h3>
+     Run two instances of this webpage along with the server to test this
+     application.<br> Create an offer, and then send the message. <br>Check
+     the browser console to see the output.
+    </h3>
+  
+    <!--WebRTC related code-->
+    <button type="button" class="btn btn-primary" (click)='connectToWebsocket()'>Connect</button>
+    <button type="button" class="btn btn-primary" (click)='createOffer()'>CreateOffer</button>
+    <input id="messageInput" type="text" class="form-control" placeholder="message" (keyup)="onKey($event)">
+    <button type="button" class="btn btn-primary" (click)='sendMessage()'>SEND</button>
+
+    <div>
+        <button type="button" class="btn btn-primary" (click)='getMediaStream()'>getMediaStream</button>
+        <!-- <video id="asd"></video> -->
+        <h3>Local video</h3>
+        <video #remoteVideo controls autoplay id="local"></video>
+        <h3>Remote video</h3>
+        <video #remoteVideo controls autoplay id="remote-1"></video>
+        <video #remoteVideo controls autoplay id="remote-2"></video>
+    </div>
+    <!--WebRTC related code-->
+
+
+</div>

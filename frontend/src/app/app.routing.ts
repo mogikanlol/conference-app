@@ -1,6 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {AuthenticationGuard} from './authentication/guard/authentication.guard';
+import { WebsocketComponent } from './websocket/websocket.component';
+import { WebrtcComponent } from './webrtc/webrtc.component';
+import { WebrtcComponent2 } from './webrtc2/webrtc.component';
+import { WebrtcComponent3 } from './webrtc2 copy/webrtc.component';
 
 
 const appRoutes: Routes = [
@@ -64,6 +68,22 @@ const appRoutes: Routes = [
     path: '',
     redirectTo: 'conferences',
     pathMatch: 'full'
+  },
+  {
+    path: 'websocket-test',
+    component: WebsocketComponent
+  },
+  {
+    path: 'webrtc-test',
+    component: WebrtcComponent
+  },
+  {
+    path: 'webrtc-test-2',
+    component: WebrtcComponent2
+  },
+  {
+    path: 'webrtc-test-3',
+    component: WebrtcComponent3
   }
 ];
 

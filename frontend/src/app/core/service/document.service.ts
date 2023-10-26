@@ -10,15 +10,15 @@ export class DocumentService {
   }
 
   getDocument(documentId: number): Observable<MyDocument> {
-    return this.http.get<MyDocument>('http://localhost:8081/api/documents/' + documentId);
+    return this.http.get<MyDocument>('/backend/api/documents/' + documentId);
   }
 
   downloadFile(documentId: number) {
-    return this.http.get('http://localhost:8081/api/documents/' + documentId + '/download',
+    return this.http.get('/backend/api/documents/' + documentId + '/download',
       {responseType: 'blob', observe: 'response'});
   }
 
   deleteDocument(documentId: number) {
-    return this.http.delete('http://localhost:8081/api/documents/' + documentId);
+    return this.http.delete('/backend/api/documents/' + documentId);
   }
 }

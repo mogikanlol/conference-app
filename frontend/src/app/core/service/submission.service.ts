@@ -13,42 +13,42 @@ export class SubmissionService {
   }
 
   getSubmissions(conferenceId: number) {
-    return this.http.get('http://localhost:8081/api/submissions');
+    return this.http.get('/backend/submissions');
   }
 
   getReviewableSubmisisons(conferenceId: number): Observable<Array<Submission>> {
     const params = new HttpParams().set('reviewable', true.toString());
-    return this.http.get<Array<Submission>>('http://localhost:8081/api/conferences/' + conferenceId + '/submissions', {params: params});
+    return this.http.get<Array<Submission>>('/backend/conferences/' + conferenceId + '/submissions', {params: params});
   }
 
   getSubmission(submissionId: number): Observable<Submission> {
-    return this.http.get<Submission>('http://localhost:8081/api/submissions/' + submissionId);
+    return this.http.get<Submission>('/backend/submissions/' + submissionId);
   }
 
   setReviewable(submissionId: number, reviewable: boolean): Observable<Submission> {
     return this.http
-      .put<Submission>('http://localhost:8081/api/submissions/' + submissionId + '/reviewable', reviewable.toString());
+      .put<Submission>('/backend/submissions/' + submissionId + '/reviewable', reviewable.toString());
   }
 
   uploadDocument(submissionId: number, file: File): Observable<Submission> {
     const formdata: FormData = new FormData();
     formdata.append('file', file);
-    return this.http.post<Submission>('http://localhost:8081/api/submissions/' + submissionId + '/documents', formdata);
+    return this.http.post<Submission>('/backend/submissions/' + submissionId + '/documents', formdata);
   }
 
   getReviewers(submissionId: number, page: number = 0): Observable<Page<BriefUser>> {
-    return this.http.get<Page<BriefUser>>('http://localhost:8081/api/submissions/' + submissionId + '/reviewers?page=' + page);
+    return this.http.get<Page<BriefUser>>('/backend/submissions/' + submissionId + '/reviewers?page=' + page);
   }
 
   addReviewers(submissionId: number, reviewers: Array<number>) {
-    return this.http.post('http://localhost:8081/api/submissions/' + submissionId + '/reviewers', reviewers);
+    return this.http.post('/backend/submissions/' + submissionId + '/reviewers', reviewers);
   }
 
   deleteReviewers(submissionId: number, reviewers: Array<number>) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }), body: reviewers
     };
-    return this.http.delete('http://localhost:8081/api/submissions/' + submissionId + '/reviewers', httpOptions);
+    return this.http.delete('/backend/submissions/' + submissionId + '/reviewers', httpOptions);
   }
 
 

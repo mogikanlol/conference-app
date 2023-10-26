@@ -1,0 +1,35 @@
+<div>
+
+    This is Websocket page!
+    <div *ngIf="this.error">
+        <h3>Error message</h3>
+        {{this.error}}
+    </div>
+    <div>
+        <button (click)="connect()">Connect</button>
+    </div>
+    <br>
+    <div>    
+        <button (click)="disconnect()">Disconnect</button>
+    </div>
+    <br>
+    <div>
+        <div *ngFor="let message of this.messages">{{this.tokenService.getUsername()}}:{{message}}</div>
+    </div>
+
+    <div>
+        <input type="text" (keyup)="onKey($event)">
+        <button (click)="send()">Send</button>
+    </div>
+
+
+    <!-- <div>
+        <div>
+          <video #remoteVideo controls autoplay></video>
+          <button class="btn btn-primary m-3" (click)="makeCall()">Init call</button>
+        </div>
+        <br>
+    </div> -->
+
+
+</div>
